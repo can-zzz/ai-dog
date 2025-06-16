@@ -1,0 +1,17 @@
+spring:
+  ai:
+    openai:
+      api-key: sk-7bf84f6c484e4f7391a5c3aa93e2cc31
+      model: qwen-turbo
+      temperature: 0.7
+      max-tokens: 2000
+      base-url: https://dashscope.aliyuncs.com/compatible-mode
+      options:
+        timeout: 60000
+
+# weather:
+#   api:
+#     key: ${WEATHER_API_KEY:your_weather_api_key_here}
+
+server:
+  port: 8080
