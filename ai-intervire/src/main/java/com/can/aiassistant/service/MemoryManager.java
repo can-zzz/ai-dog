@@ -102,11 +102,17 @@ public class MemoryManager {
             
             // 2. 保存AI响应
             if (context.getGeneratedResponse() != null) {
+                String responseContent = context.getGeneratedResponse().toString();
+                log.info("💾 保存AI响应 - 会话: {}, 响应长度: {}, 内容: {}",
+                    sessionId, responseContent.length(),
+                    responseContent.substring(0, Math.min(50, responseContent.length())) + "...");
                 ChatMessage assistantMessage = ChatMessage.assistantMessage(
-                    context.getGeneratedResponse().toString(),
+                    responseContent,
                     sessionId
                 );
                 addMessageToHistory(sessionId, assistantMessage);
+            } else {
+                log.warn("⚠️ AI响应为空，未保存 - 会话: {}", sessionId);
             }
             
             // 3. 更新上下文相关性缓存

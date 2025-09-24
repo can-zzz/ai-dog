@@ -56,15 +56,15 @@ public class ResponseGenerator {
             GenerationStrategy strategy = determineGenerationStrategy(processedRequest, context);
             log.info("🎯 生成策略: {} - 会话: {}", strategy, sessionId);
             
-            // 执行响应生成
-            String response = executeGenerationStrategy(processedRequest, context, strategy, callback);
+            // 创建响应收集器来收集流式响应内容
+            ResponseCollector responseCollector = new ResponseCollector(callback, context);
             
-            // 更新执行上下文
-            context.setGeneratedResponse(response);
+            // 执行响应生成
+            executeGenerationStrategy(processedRequest, context, strategy, responseCollector);
             
             long generationDuration = System.currentTimeMillis() - generationStartTime;
-            log.info("✅ 响应生成完成 - 会话: {}, 策略: {}, 响应长度: {}, 耗时: {}ms", 
-                sessionId, strategy, response.length(), generationDuration);
+            log.info("✅ 响应生成完成 - 会话: {}, 策略: {}, 耗时: {}ms", 
+                sessionId, strategy, generationDuration);
             
         } catch (Exception e) {
             long generationDuration = System.currentTimeMillis() - generationStartTime;
@@ -109,21 +109,27 @@ public class ResponseGenerator {
     /**
      * 执行生成策略
      */
-    private String executeGenerationStrategy(ProcessedRequest processedRequest, ExecutionContext context, 
-                                           GenerationStrategy strategy, StreamResponseCallback callback) {
+    private void executeGenerationStrategy(ProcessedRequest processedRequest, ExecutionContext context, 
+                                           GenerationStrategy strategy, ResponseCollector responseCollector) {
         switch (strategy) {
             case RAG_GENERATION:
-                return executeRAGGeneration(processedRequest, context, callback);
+                executeRAGGeneration(processedRequest, context, responseCollector);
+                break;
             case THINKING_BASED_GENERATION:
-                return executeThinkingBasedGeneration(processedRequest, context, callback);
+                executeThinkingBasedGeneration(processedRequest, context, responseCollector);
+                break;
             case CONTEXT_AWARE_GENERATION:
-                return executeContextAwareGeneration(processedRequest, context, callback);
+                executeContextAwareGeneration(processedRequest, context, responseCollector);
+                break;
             case ENHANCED_GENERATION:
-                return executeEnhancedGeneration(processedRequest, context, callback);
+                executeEnhancedGeneration(processedRequest, context, responseCollector);
+                break;
             case SIMPLE_GENERATION:
-                return executeSimpleGeneration(processedRequest, context, callback);
+                executeSimpleGeneration(processedRequest, context, responseCollector);
+                break;
             default:
-                return executeStandardGeneration(processedRequest, context, callback);
+                executeStandardGeneration(processedRequest, context, responseCollector);
+                break;
         }
     }
     
@@ -259,25 +265,14 @@ public class ResponseGenerator {
     /**
      * 标准生成
      */
-    private String executeStandardGeneration(ProcessedRequest processedRequest, ExecutionContext context, StreamResponseCallback callback) {
+    private void executeStandardGeneration(ProcessedRequest processedRequest, ExecutionContext context, ResponseCollector responseCollector) {
         log.info("📄 执行标准生成");
         
         // 构建标准消息
         List<Map<String, String>> messages = buildStandardMessages(processedRequest, context);
         
         // 流式调用AI模型
-        StringBuilder response = new StringBuilder();
-        aiService.streamCallAiModel(messages, new StreamResponseCallback() {
-            @Override
-            public void onResponse(StreamResponse streamResponse) {
-                if (streamResponse.getContent() != null) {
-                    response.append(streamResponse.getContent());
-                }
-                callback.onResponse(streamResponse);
-            }
-        });
-        
-        return response.toString();
+        aiService.streamCallAiModel(messages, responseCollector);
     }
     
     /**
@@ -314,11 +309,13 @@ public class ResponseGenerator {
      */
     private List<Map<String, String>> buildThinkingBasedMessages(ProcessedRequest processedRequest, ExecutionContext context) {
         List<Map<String, String>> messages = new ArrayList<>();
+        String sessionId = processedRequest.getSessionId();
         
         // 系统消息
         Map<String, String> systemMessage = new HashMap<>();
         systemMessage.put("role", "system");
         systemMessage.put("content", systemPrompt + "\n\n请基于之前的深度思考结果来生成最终回答。");
+        systemMessage.put("sessionId", sessionId);
         messages.add(systemMessage);
         
         // 添加思考结果
@@ -326,6 +323,7 @@ public class ResponseGenerator {
             Map<String, String> thinkingMessage = new HashMap<>();
             thinkingMessage.put("role", "system");
             thinkingMessage.put("content", "深度思考结果：\n" + context.getThinkingResult().toString());
+            thinkingMessage.put("sessionId", sessionId);
             messages.add(thinkingMessage);
         }
         
@@ -333,6 +331,7 @@ public class ResponseGenerator {
         Map<String, String> userMessage = new HashMap<>();
         userMessage.put("role", "user");
         userMessage.put("content", processedRequest.getRequest().getMessage());
+        userMessage.put("sessionId", sessionId);
         messages.add(userMessage);
         
         return messages;
@@ -343,28 +342,37 @@ public class ResponseGenerator {
      */
     private List<Map<String, String>> buildContextAwareMessages(ProcessedRequest processedRequest, ExecutionContext context) {
         List<Map<String, String>> messages = new ArrayList<>();
+        String sessionId = processedRequest.getSessionId();
         
         // 系统消息
         Map<String, String> systemMessage = new HashMap<>();
         systemMessage.put("role", "system");
         systemMessage.put("content", systemPrompt);
+        systemMessage.put("sessionId", sessionId);
         messages.add(systemMessage);
         
         // 添加历史上下文
         MemoryContext memoryContext = (MemoryContext) context.getMemoryContext();
         if (memoryContext != null && !memoryContext.getCompressedContext().isEmpty()) {
+            log.info("🔍 添加历史上下文 - 会话: {}, 压缩后消息数: {}", sessionId, memoryContext.getCompressedContext().size());
             for (ChatMessage msg : memoryContext.getCompressedContext()) {
                 Map<String, String> historyMessage = new HashMap<>();
-                historyMessage.put("role", msg.getType().toString().toLowerCase());
+                String role = msg.getType().toString().toLowerCase();
+                historyMessage.put("role", role);
                 historyMessage.put("content", msg.getContent());
+                historyMessage.put("sessionId", sessionId);
                 messages.add(historyMessage);
+                log.info("📝 历史消息 - 角色: {}, 内容: {}", role, msg.getContent().substring(0, Math.min(50, msg.getContent().length())) + "...");
             }
+        } else {
+            log.info("⚠️ 没有历史上下文 - 会话: {}", sessionId);
         }
         
         // 用户消息
         Map<String, String> userMessage = new HashMap<>();
         userMessage.put("role", "user");
         userMessage.put("content", processedRequest.getRequest().getMessage());
+        userMessage.put("sessionId", sessionId);
         messages.add(userMessage);
         
         return messages;
@@ -420,17 +428,20 @@ public class ResponseGenerator {
      */
     private List<Map<String, String>> buildStandardMessages(ProcessedRequest processedRequest, ExecutionContext context) {
         List<Map<String, String>> messages = new ArrayList<>();
+        String sessionId = processedRequest.getSessionId();
         
         // 使用提示词模板的标准系统消息
         Map<String, String> systemMessage = new HashMap<>();
         systemMessage.put("role", "system");
         systemMessage.put("content", promptTemplates.getBasicChatSystemPrompt());
+        systemMessage.put("sessionId", sessionId);
         messages.add(systemMessage);
         
         // 用户消息
         Map<String, String> userMessage = new HashMap<>();
         userMessage.put("role", "user");
         userMessage.put("content", processedRequest.getRequest().getMessage());
+        userMessage.put("sessionId", sessionId);
         messages.add(userMessage);
         
         return messages;
@@ -492,6 +503,45 @@ public class ResponseGenerator {
         @Override
         public String toString() {
             return description;
+        }
+    }
+
+    /**
+     * 响应收集器 - 用于收集流式响应并保存到执行上下文
+     */
+    private static class ResponseCollector implements StreamResponseCallback {
+        private final StreamResponseCallback originalCallback;
+        private final ExecutionContext context;
+        private final StringBuilder responseContent;
+
+        public ResponseCollector(StreamResponseCallback originalCallback, ExecutionContext context) {
+            this.originalCallback = originalCallback;
+            this.context = context;
+            this.responseContent = new StringBuilder();
+        }
+
+        @Override
+        public void onResponse(StreamResponse response) {
+            // 收集响应内容
+            if (response.getContent() != null) {
+                responseContent.append(response.getContent());
+            }
+
+            // 转发给原始callback
+            originalCallback.onResponse(response);
+
+            // 如果是完成信号，保存最终响应到上下文
+            if (response.isDone()) {
+                String finalResponse = responseContent.toString();
+                context.setGeneratedResponse(finalResponse);
+                log.info("✅ ResponseCollector保存最终响应 - 长度: {}, 内容: {}",
+                    finalResponse.length(),
+                    finalResponse.substring(0, Math.min(50, finalResponse.length())) + "...");
+            }
+        }
+
+        public String getCollectedResponse() {
+            return responseContent.toString();
         }
     }
 }

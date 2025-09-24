@@ -181,21 +181,26 @@ public class ThinkingExecutor {
         // 获取对应的思考提示词
         String thinkingPrompt = promptTemplates.getThinkingStrategyPrompt(strategy.name());
         
-        // 调用原有的思考流程，但增加策略指导
+        // 调用原有的思考流程，使用策略特定的提示词
         List<ThinkingStep> steps = new ArrayList<>();
         
-        // 使用原有的AiService进行思考，但这里我们需要重构调用方式
-        // 暂时使用简化的实现
         try {
-            // 这里应该调用优化后的思考流程
-            aiService.streamThinkingSteps(message, sessionId, callback);
+            // 使用策略提示词进行思考
+            aiService.streamThinkingStepsWithPrompt(message, sessionId, thinkingPrompt, callback);
             
             // 创建思考结果（简化实现）
             steps.add(ThinkingStep.analyze("策略执行", "使用" + strategy.getDescription() + "完成分析"));
             
         } catch (Exception e) {
-            log.error("思考策略执行失败: {}", e.getMessage());
-            steps.add(ThinkingStep.analyze("思考过程", "正在分析您的问题..."));
+            log.error("思考策略执行失败: {}, 回退到默认思考流程", e.getMessage());
+            // 回退到原有的思考流程
+            try {
+                aiService.streamThinkingSteps(message, sessionId, callback);
+                steps.add(ThinkingStep.analyze("思考过程", "正在分析您的问题..."));
+            } catch (Exception fallbackError) {
+                log.error("默认思考流程也失败: {}", fallbackError.getMessage());
+                steps.add(ThinkingStep.analyze("思考过程", "思考过程遇到问题，正在尝试其他方式..."));
+            }
         }
         
         return new ThinkingResult(steps, strategy, System.currentTimeMillis());

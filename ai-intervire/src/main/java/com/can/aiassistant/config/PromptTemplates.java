@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 /**
  * 提示词模板配置管理
- * 参考元石科技的小白智能助手提示词体系
+ * 提示词体系
  */
 @Component
 @ConfigurationProperties(prefix = "ai.prompt-templates")

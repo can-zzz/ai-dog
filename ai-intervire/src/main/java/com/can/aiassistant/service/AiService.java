@@ -145,7 +145,53 @@ public class AiService {
     }
 
     /**
-     * 流式输出思考步骤
+     * 流式输出思考步骤（使用自定义提示词）
+     */
+    public void streamThinkingStepsWithPrompt(String userMessage, String sessionId, String customPrompt, StreamResponseCallback callback) {
+        long thinkingStartTime = System.currentTimeMillis();
+        try {
+            log.info("🧠 开始构建自定义深度思考消息 - 会话: {}", sessionId);
+            
+            // 构建使用自定义提示词的深度思考消息
+            List<Map<String, String>> thinkingMessages = buildThinkingMessagesWithPrompt(userMessage, sessionId, customPrompt);
+            log.debug("📝 自定义深度思考消息构建完成 - 会话: {}, 消息数量: {}", sessionId, thinkingMessages.size());
+            
+            // 发送开始思考的进度反馈
+            callback.onResponse(StreamResponse.thinking(
+                ThinkingStep.analyze("策略思考", 
+                    "正在使用专门的策略提示词进行深度分析...")
+            ));
+            
+            long modelCallStart = System.currentTimeMillis();
+            
+            // 使用流式调用进行深度思考
+            streamCallThinkingModel(thinkingMessages, thinkingModel, sessionId, callback);
+            
+            long modelCallDuration = System.currentTimeMillis() - modelCallStart;
+            log.info("🤖 策略思考模型调用完成 - 会话: {}, 耗时: {}ms", sessionId, modelCallDuration);
+            
+            long totalThinkingTime = System.currentTimeMillis() - thinkingStartTime;
+            log.info("✅ 策略思考步骤完成 - 会话: {}, 总耗时: {}ms", sessionId, totalThinkingTime);
+            
+            // 清理跟踪信息
+            sentThinkingSteps.remove(sessionId);
+            
+        } catch (Exception e) {
+            long totalThinkingTime = System.currentTimeMillis() - thinkingStartTime;
+            log.error("❌ 策略思考步骤失败 - 会话: {}, 错误: {}, 耗时: {}ms", 
+                sessionId, e.getMessage(), totalThinkingTime);
+            
+            // 清理跟踪信息
+            sentThinkingSteps.remove(sessionId);
+            
+            callback.onResponse(StreamResponse.thinking(
+                ThinkingStep.analyze("思考过程", "正在分析您的问题...")
+            ));
+        }
+    }
+
+    /**
+     * 流式输出思考步骤（使用默认提示词）
      */
     public void streamThinkingSteps(String userMessage, String sessionId, StreamResponseCallback callback) {
         long thinkingStartTime = System.currentTimeMillis();
@@ -532,28 +578,7 @@ public class AiService {
                                                 return null; // 提前结束流式响应处理
                                             }
                                             
-                                            // 保存到历史记录
-                                            if ("stop".equals(choice.get("finish_reason"))) {
-                                                String finalMessage = currentMessage.toString();
-                                                String currentSessionId = null;
-                                                // 安全地获取sessionId
-                                                if (!messages.isEmpty()) {
-                                                    Map<String, String> lastMessage = messages.get(messages.size() - 1);
-                                                    if (lastMessage != null) {
-                                                        currentSessionId = lastMessage.get("sessionId");
-                                                    }
-                                                }
-                                                
-                                                if (currentSessionId != null) {
-                                                    ChatMessage assistantMessage = ChatMessage.assistantMessage(
-                                                        finalMessage,
-                                                        currentSessionId
-                                                    );
-                                                    addMessageToHistory(assistantMessage.getSessionId(), assistantMessage);
-                                                } else {
-                                                    log.warn("Could not find sessionId for message history");
-                                                }
-                                            }
+                                            // 注意：历史记录现在由新架构的MemoryManager管理
                                         }
                                     }
                                 }
@@ -569,6 +594,14 @@ public class AiService {
                     long totalStreamTime = System.currentTimeMillis() - streamCallStart;
                     log.info("✅ 流式响应处理完成 - 会话: {}, 总耗时: {}ms, 总块数: {}, 首块延迟: {}ms, 消息长度: {}字符", 
                         sessionId, totalStreamTime, chunkCount, firstChunkTime, currentMessage.length());
+                    
+                    // 发送完成信号
+                    try {
+                        callback.onResponse(StreamResponse.done());
+                        log.debug("✅ 发送完成信号 - 会话: {}", sessionId);
+                    } catch (Exception ex) {
+                        log.debug("⚠️ 发送完成信号失败 - 会话: {}, 错误: {}", sessionId, ex.getMessage());
+                    }
                     
                     return null;
                 } catch (Exception e) {
@@ -776,7 +809,30 @@ public class AiService {
     }
     
     /**
-     * 构建深度思考的消息列表
+     * 构建深度思考的消息列表（使用自定义提示词）
+     */
+    private List<Map<String, String>> buildThinkingMessagesWithPrompt(String userMessage, String sessionId, String customPrompt) {
+        List<Map<String, String>> messages = new ArrayList<>();
+        
+        // 添加自定义思考系统提示
+        Map<String, String> systemMessage = new HashMap<>();
+        systemMessage.put("role", "system");
+        systemMessage.put("content", customPrompt);
+        systemMessage.put("sessionId", sessionId);
+        messages.add(systemMessage);
+        
+        // 添加用户问题
+        Map<String, String> userMsg = new HashMap<>();
+        userMsg.put("role", "user");
+        userMsg.put("content", "请对以下问题进行深度思考：\n\n" + userMessage);
+        userMsg.put("sessionId", sessionId);
+        messages.add(userMsg);
+        
+        return messages;
+    }
+    
+    /**
+     * 构建深度思考的消息列表（使用默认提示词）
      */
     private List<Map<String, String>> buildThinkingMessages(String userMessage, String sessionId) {
         List<Map<String, String>> messages = new ArrayList<>();
