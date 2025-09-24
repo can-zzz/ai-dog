@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端测试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+        #messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+        .message { margin: 5px 0; padding: 5px; }
+        .user { background: #e3f2fd; text-align: right; }
+        .assistant { background: #f3e5f5; }
+    </style>
+</head>
+<body>
+    <h1>AI助手前端功能测试</h1>
+    
+    <div class="test-section">
+        <h3>1. 基础连接测试</h3>
+        <button onclick="testHealth()">测试健康检查</button>
+        <div id="healthResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. 流式聊天测试</h3>
+        <input type="text" id="messageInput" placeholder="输入消息..." style="width: 300px;">
+        <button onclick="testStreamChat()">发送流式消息</button>
+        <div id="messages"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. 普通聊天测试</h3>
+        <input type="text" id="normalMessageInput" placeholder="输入消息..." style="width: 300px;">
+        <button onclick="testNormalChat()">发送普通消息</button>
+        <div id="normalResult"></div>
+    </div>
+
+    <script>
+        // 测试健康检查
+        async function testHealth() {
+            const resultDiv = document.getElementById('healthResult');
+            try {
+                const response = await fetch('/api/ai/health');
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success">✅ 健康检查通过: ${data.status}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ 健康检查失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 测试流式聊天
+        async function testStreamChat() {
+            const messageInput = document.getElementById('messageInput');
+            const messagesDiv = document.getElementById('messages');
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                alert('请输入消息');
+                return;
+            }
+            
+            // 添加用户消息
+            addMessage('user', message);
+            messageInput.value = '';
+            
+            try {
+                const response = await fetch('/api/stream/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        sessionId: 'test-session',
+                        saveHistory: true,
+                        enableDeepThinking: false
+                    })
+                });
+                
+                const reader = response.body.getReader();
+                let buffer = '';
+                let currentMessage = '';
+                
+                function processStream() {
+                    return reader.read().then(({done, value}) => {
+                        if (done) {
+                            return;
+                        }
+                        
+                        const chunk = new TextDecoder().decode(value);
+                        buffer += chunk;
+                        
+                        const lines = buffer.split('\\n');
+                        buffer = lines.pop();
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const jsonData = line.substring(6).trim();
+                                    if (jsonData === '') continue;
+                                    const data = JSON.parse(jsonData);
+                                    
+                                    if (data.error) {
+                                        addMessage('assistant', '错误: ' + data.error);
+                                        return;
+                                    }
+                                    
+                                    if (data.done) {
+                                        return;
+                                    }
+                                    
+                                    if (data.content) {
+                                        currentMessage += data.content;
+                                        updateLastMessage(currentMessage);
+                                    }
+                                } catch (e) {
+                                    console.error('JSON解析错误:', e);
+                                }
+                            }
+                        }
+                        
+                        return processStream();
+                    });
+                }
+                
+                // 创建助手消息占位符
+                addMessage('assistant', '');
+                await processStream();
+                
+            } catch (error) {
+                addMessage('assistant', '网络错误: ' + error.message);
+            }
+        }
+        
+        // 测试普通聊天
+        async function testNormalChat() {
+            const messageInput = document.getElementById('normalMessageInput');
+            const resultDiv = document.getElementById('normalResult');
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                alert('请输入消息');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        sessionId: 'test-session',
+                        saveHistory: true,
+                        enableDeepThinking: false
+                    })
+                });
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success">✅ 响应: ${data.message}</div>`;
+                messageInput.value = '';
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ 错误: ${error.message}</div>`;
+            }
+        }
+        
+        // 添加消息到界面
+        function addMessage(type, content) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        // 更新最后一条消息
+        function updateLastMessage(content) {
+            const messagesDiv = document.getElementById('messages');
+            const lastMessage = messagesDiv.lastElementChild;
+            if (lastMessage && lastMessage.classList.contains('assistant')) {
+                lastMessage.textContent = content;
+            }
+        }
+        
+        // 页面加载时自动测试健康检查
+        window.onload = function() {
+            testHealth();
+        };
+    </script>
+</body>
+</html>

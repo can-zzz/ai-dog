@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端调试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        #messages { height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: #f9f9f9; }
+        .message { margin: 10px 0; padding: 10px; border-radius: 10px; }
+        .user { background: #e3f2fd; text-align: right; }
+        .assistant { background: #f3e5f5; }
+        .stream-message { background: #e8f5e8; }
+        .debug { background: #fff3cd; font-family: monospace; font-size: 12px; }
+        input[type="text"] { width: 300px; padding: 5px; }
+        button { padding: 8px 15px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>AI助手前端调试页面</h1>
+    
+    <div class="test-section">
+        <h3>流式聊天测试</h3>
+        <input type="text" id="messageInput" placeholder="输入消息..." value="你好">
+        <button onclick="testStreamChat()">发送流式消息</button>
+        <button onclick="clearMessages()">清空消息</button>
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        function addMessage(type, content, isDebug = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type} ${isDebug ? 'debug' : ''}`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function clearMessages() {
+            document.getElementById('messages').innerHTML = '';
+        }
+        
+        async function testStreamChat() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                alert('请输入消息');
+                return;
+            }
+            
+            // 添加用户消息
+            addMessage('user', message);
+            addMessage('debug', '开始发送请求...', true);
+            
+            try {
+                const response = await fetch('/api/stream/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        sessionId: 'debug-session',
+                        saveHistory: true,
+                        enableDeepThinking: false
+                    })
+                });
+                
+                addMessage('debug', '收到响应，开始处理流...', true);
+                
+                const reader = response.body.getReader();
+                let buffer = '';
+                let currentMessage = '';
+                let messageElement = null;
+                
+                function processStream() {
+                    return reader.read().then(({done, value}) => {
+                        if (done) {
+                            addMessage('debug', '流处理完成', true);
+                            return;
+                        }
+                        
+                        const chunk = new TextDecoder().decode(value);
+                        buffer += chunk;
+                        addMessage('debug', `收到chunk: ${chunk}`, true);
+                        
+                        const lines = buffer.split('\\n');
+                        buffer = lines.pop();
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const jsonData = line.substring(6).trim();
+                                    if (jsonData === '') continue;
+                                    const data = JSON.parse(jsonData);
+                                    
+                                    addMessage('debug', `解析数据: ${JSON.stringify(data)}`, true);
+                                    
+                                    if (data.error) {
+                                        addMessage('assistant', '错误: ' + data.error);
+                                        return;
+                                    }
+                                    
+                                    if (data.done) {
+                                        addMessage('debug', '收到完成信号', true);
+                                        return;
+                                    }
+                                    
+                                    if (data.content) {
+                                        if (currentMessage === '') {
+                                            // 创建新的消息元素
+                                            const messagesDiv = document.getElementById('messages');
+                                            messageElement = document.createElement('div');
+                                            messageElement.className = 'message assistant stream-message';
+                                            messageElement.textContent = '';
+                                            messagesDiv.appendChild(messageElement);
+                                        }
+                                        
+                                        currentMessage += data.content;
+                                        if (messageElement) {
+                                            messageElement.textContent = currentMessage;
+                                        }
+                                        
+                                        // 滚动到底部
+                                        const messagesDiv = document.getElementById('messages');
+                                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                                    }
+                                } catch (e) {
+                                    addMessage('debug', `JSON解析错误: ${e.message}, 数据: ${jsonData}`, true);
+                                }
+                            }
+                        }
+                        
+                        return processStream();
+                    });
+                }
+                
+                await processStream();
+                
+            } catch (error) {
+                addMessage('assistant', '网络错误: ' + error.message);
+                addMessage('debug', `错误详情: ${error.stack}`, true);
+            }
+        }
+        
+        // 页面加载时自动测试
+        window.onload = function() {
+            addMessage('debug', '页面加载完成，准备测试', true);
+        };
+    </script>
+</body>
+</html>
