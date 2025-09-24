@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI助手 - 诊断页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            background: #f1f8e9;
+        }
+        
+        .error {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+        
+        .test-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .test-button:hover {
+            background: #1976D2;
+        }
+        
+        .result {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 AI助手诊断页面</h1>
+        
+        <div class="status">
+            ✅ 诊断页面加载成功 - 时间: <span id="loadTime"></span>
+        </div>
+        
+        <div class="status">
+            ✅ 服务端口: <span id="currentPort"></span>
+        </div>
+        
+        <h2>📊 系统检测</h2>
+        
+        <button class="test-button" onclick="testHealthCheck()">测试健康检查</button>
+        <button class="test-button" onclick="testStreamAPI()">测试流式API</button>
+        <button class="test-button" onclick="testMainPage()">测试主页</button>
+        <button class="test-button" onclick="testChatPage()">测试聊天页面</button>
+        
+        <h2>📋 测试结果</h2>
+        <div id="testResults"></div>
+        
+        <h2>🌐 页面链接</h2>
+        <ul>
+            <li><a href="/" target="_blank">🏠 主页</a></li>
+            <li><a href="/chat" target="_blank">💬 聊天页面</a></li>
+            <li><a href="/api-docs" target="_blank">📚 API文档</a></li>
+        </ul>
+        
+        <h2>🔍 浏览器信息</h2>
+        <div class="result" id="browserInfo"></div>
+        
+        <h2>📱 设备信息</h2>
+        <div class="result" id="deviceInfo"></div>
+    </div>
+
+    <script>
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loadTime').textContent = new Date().toLocaleString();
+            document.getElementById('currentPort').textContent = window.location.port || '80';
+            
+            // 显示浏览器信息
+            document.getElementById('browserInfo').textContent = 
+                'User Agent: ' + navigator.userAgent + '\n' +
+                'Language: ' + navigator.language + '\n' +
+                'Platform: ' + navigator.platform + '\n' +
+                'Cookies Enabled: ' + navigator.cookieEnabled;
+            
+            // 显示设备信息
+            document.getElementById('deviceInfo').textContent = 
+                'Screen: ' + screen.width + 'x' + screen.height + '\n' +
+                'Window: ' + window.innerWidth + 'x' + window.innerHeight + '\n' +
+                'URL: ' + window.location.href + '\n' +
+                'Protocol: ' + window.location.protocol;
+        });
+        
+        function addResult(test, success, message) {
+            const results = document.getElementById('testResults');
+            const div = document.createElement('div');
+            div.className = 'status' + (success ? '' : ' error');
+            div.innerHTML = (success ? '✅' : '❌') + ' ' + test + ': ' + message;
+            results.appendChild(div);
+        }
+        
+        function testHealthCheck() {
+            fetch('/api/stream/health')
+                .then(response => response.json())
+                .then(data => {
+                    addResult('健康检查', true, '服务正常 - ' + data.content);
+                })
+                .catch(error => {
+                    addResult('健康检查', false, '失败 - ' + error.message);
+                });
+        }
+        
+        function testStreamAPI() {
+            fetch('/api/stream/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: '测试消息',
+                    sessionId: 'diagnostic-test',
+                    enableDeepThinking: false
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    addResult('流式API', true, '连接成功，状态码: ' + response.status);
+                } else {
+                    addResult('流式API', false, '状态码: ' + response.status);
+                }
+            })
+            .catch(error => {
+                addResult('流式API', false, '失败 - ' + error.message);
+            });
+        }
+        
+        function testMainPage() {
+            fetch('/')
+                .then(response => {
+                    if (response.ok) {
+                        addResult('主页', true, '加载成功，状态码: ' + response.status);
+                    } else {
+                        addResult('主页', false, '状态码: ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    addResult('主页', false, '失败 - ' + error.message);
+                });
+        }
+        
+        function testChatPage() {
+            fetch('/chat')
+                .then(response => {
+                    if (response.ok) {
+                        addResult('聊天页面', true, '加载成功，状态码: ' + response.status);
+                    } else {
+                        addResult('聊天页面', false, '状态码: ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    addResult('聊天页面', false, '失败 - ' + error.message);
+                });
+        }
+        
+        // 自动运行基础测试
+        setTimeout(() => {
+            testHealthCheck();
+            testMainPage();
+            testChatPage();
+        }, 1000);
+    </script>
+</body>
+</html>

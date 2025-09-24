@@ -341,25 +341,18 @@ public class AiService {
                                             currentThinkingContent.append(content);
                                             contentBuffer.append(content);
                                             
-                                            // 当缓冲区累积足够内容时发送（避免过于频繁的小块）
-                                            if (contentBuffer.length() >= 10 || content.contains("】") || content.contains("【")) {
-                                                String bufferContent = contentBuffer.toString().trim();
-                                                if (bufferContent.length() > 0) {
-                                                    try {
-                                                        callback.onResponse(StreamResponse.thinking(
-                                                            ThinkingStep.reason("AI思考中", bufferContent)
-                                                        ));
-                                                        contentBuffer.setLength(0); // 清空缓冲区
-                                                    } catch (Exception ex) {
-                                                        // 如果callback失败（如连接已断开），停止处理
-                                                        log.debug("⚠️ 思考内容发送失败，停止处理 - 会话: {}, 错误: {}", sessionId, ex.getMessage());
-                                                        return null; // 提前结束流式响应处理
-                                                    }
+                                            // 流式发送思考内容用于累积显示
+                                            if (content.length() > 0) {
+                                                try {
+                                                    callback.onResponse(StreamResponse.thinking(
+                                                        ThinkingStep.reason("思考中", content)
+                                                    ));
+                                                } catch (Exception ex) {
+                                                    // 如果callback失败（如连接已断开），停止处理
+                                                    log.debug("⚠️ 思考内容发送失败，停止处理 - 会话: {}, 错误: {}", sessionId, ex.getMessage());
+                                                    return null; // 提前结束流式响应处理
                                                 }
                                             }
-                                            
-                                            // 同时尝试解析结构化步骤
-                                            parseAndSendThinkingSteps(currentThinkingContent.toString(), sessionId, callback);
                                         }
                                     }
                                 }
@@ -371,19 +364,13 @@ public class AiService {
                         Thread.sleep(streamDelay);
                     }
                     
-                    // 发送剩余的缓冲内容
-                    if (contentBuffer.length() > 0) {
-                        String remainingContent = contentBuffer.toString().trim();
-                        if (remainingContent.length() > 0) {
-                            try {
-                                callback.onResponse(StreamResponse.thinking(
-                                    ThinkingStep.reason("AI思考中", remainingContent)
-                                ));
-                            } catch (Exception ex) {
-                                // 如果callback失败（如连接已断开），记录日志但不抛异常
-                                log.debug("⚠️ 剩余思考内容发送失败 - 会话: {}, 错误: {}", sessionId, ex.getMessage());
-                            }
-                        }
+                    // 思考完成，发送完成标识
+                    try {
+                        callback.onResponse(StreamResponse.thinking(
+                            ThinkingStep.analyze("思考完成", "深度思考已完成，正在生成回答...")
+                        ));
+                    } catch (Exception ex) {
+                        log.debug("⚠️ 思考完成标识发送失败 - 会话: {}, 错误: {}", sessionId, ex.getMessage());
                     }
                     
                     long totalStreamTime = System.currentTimeMillis() - streamCallStart;
@@ -896,6 +883,70 @@ public class AiService {
         } else if (title.contains("综合") || title.contains("整理") || title.contains("整合")) {
             return ThinkingStep.StepType.SYNTHESIZE;
         } else if (title.contains("验证") || title.contains("检查") || title.contains("确认")) {
+            return ThinkingStep.StepType.VALIDATE;
+        } else {
+            return ThinkingStep.StepType.REASON;
+        }
+    }
+    
+    /**
+     * 根据内容智能生成步骤标题
+     */
+    private String generateStepTitle(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            return "思考步骤";
+        }
+        
+        String trimmedContent = content.trim();
+        
+        // 如果内容以"###"开始，提取标题
+        if (trimmedContent.startsWith("###")) {
+            String[] lines = trimmedContent.split("\n");
+            String titleLine = lines[0].replace("###", "").trim();
+            if (!titleLine.isEmpty()) {
+                return titleLine.length() > 20 ? titleLine.substring(0, 20) + "..." : titleLine;
+            }
+        }
+        
+        // 根据内容关键词判断
+        String lowerContent = trimmedContent.toLowerCase();
+        if (lowerContent.contains("宏观") || lowerContent.contains("角度") || lowerContent.contains("视角")) {
+            return "宏观分析";
+        } else if (lowerContent.contains("定义") || lowerContent.contains("概念")) {
+            return "概念解析";
+        } else if (lowerContent.contains("时间") || lowerContent.contains("历史")) {
+            return "时间维度分析";
+        } else if (lowerContent.contains("空间") || lowerContent.contains("地理")) {
+            return "空间维度分析";
+        } else if (lowerContent.contains("政治") || lowerContent.contains("经济") || lowerContent.contains("社会")) {
+            return "多维度分析";
+        } else if (lowerContent.contains("总结") || lowerContent.contains("结论")) {
+            return "总结思考";
+        } else {
+            // 取内容的前20个字符作为标题
+            String shortTitle = trimmedContent.length() > 20 ? 
+                trimmedContent.substring(0, 20) + "..." : trimmedContent;
+            // 移除换行符
+            return shortTitle.replaceAll("\n", " ");
+        }
+    }
+    
+    /**
+     * 根据内容确定步骤类型
+     */
+    private ThinkingStep.StepType determineStepTypeFromContent(String content) {
+        if (content == null) return ThinkingStep.StepType.REASON;
+        
+        String lowerContent = content.toLowerCase();
+        if (lowerContent.contains("分析") || lowerContent.contains("角度") || lowerContent.contains("维度")) {
+            return ThinkingStep.StepType.ANALYZE;
+        } else if (lowerContent.contains("定义") || lowerContent.contains("概念") || lowerContent.contains("范围")) {
+            return ThinkingStep.StepType.RESEARCH;
+        } else if (lowerContent.contains("思考") || lowerContent.contains("理解") || lowerContent.contains("认识")) {
+            return ThinkingStep.StepType.REASON;
+        } else if (lowerContent.contains("综合") || lowerContent.contains("整理") || lowerContent.contains("总结")) {
+            return ThinkingStep.StepType.SYNTHESIZE;
+        } else if (lowerContent.contains("验证") || lowerContent.contains("检验") || lowerContent.contains("确认")) {
             return ThinkingStep.StepType.VALIDATE;
         } else {
             return ThinkingStep.StepType.REASON;

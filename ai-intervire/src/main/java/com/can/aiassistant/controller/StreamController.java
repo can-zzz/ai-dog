@@ -4,6 +4,7 @@ import com.can.aiassistant.dto.ChatRequest;
 import com.can.aiassistant.dto.StreamResponse;
 import com.can.aiassistant.service.AiService;
 import com.can.aiassistant.service.AgentExecutor;
+import com.can.aiassistant.graph.AgentChatWorkflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -29,14 +30,16 @@ public class StreamController {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final AiService aiService;
     private final AgentExecutor agentExecutor;
+    private final AgentChatWorkflow agentChatWorkflow;
     
     @Value("${ai.stream.timeout:300000}")
     private long streamTimeout;
     
     @Autowired
-    public StreamController(AiService aiService, AgentExecutor agentExecutor) {
+    public StreamController(AiService aiService, AgentExecutor agentExecutor, AgentChatWorkflow agentChatWorkflow) {
         this.aiService = aiService;
         this.agentExecutor = agentExecutor;
+        this.agentChatWorkflow = agentChatWorkflow;
     }
     
     /**
@@ -105,6 +108,80 @@ public class StreamController {
         });
         
         return emitter;
+    }
+    
+    /**
+     * StateGraph模式的流式聊天接口
+     */
+    @PostMapping(value = "/chat-graph", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter streamChatWithGraph(@Valid @RequestBody ChatRequest request) {
+        long startTime = System.currentTimeMillis();
+        String sessionId = request.getSessionId() != null ? request.getSessionId() : "unknown";
+        
+        log.info("=== StateGraph流式聊天请求开始 ===");
+        log.info("📥 请求参数 - 会话: {}, 消息: {}, 深度思考: {}", 
+            sessionId, 
+            request.getMessage().substring(0, Math.min(50, request.getMessage().length())) + "...",
+            request.getEnableDeepThinking());
+        
+        SseEmitter emitter = new SseEmitter(streamTimeout);
+        
+        // 设置超时处理
+        emitter.onTimeout(() -> {
+            long duration = System.currentTimeMillis() - startTime;
+            log.warn("⏰ StateGraph流式聊天超时 - 会话: {}, 处理时长: {}ms", sessionId, duration);
+            emitter.completeWithError(new RuntimeException("请求超时，请稍后重试"));
+        });
+        
+        // 设置错误处理
+        emitter.onError((throwable) -> {
+            long duration = System.currentTimeMillis() - startTime;
+            log.error("❌ StateGraph流式聊天发生错误 - 会话: {}, 错误: {}, 处理时长: {}ms", 
+                sessionId, throwable.getMessage(), duration);
+        });
+        
+        // 设置完成处理
+        emitter.onCompletion(() -> {
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("✅ StateGraph流式聊天完成 - 会话: {}, 总处理时长: {}ms", sessionId, duration);
+            log.info("=== StateGraph流式聊天请求结束 ===");
+        });
+        
+        executorService.execute(() -> {
+            try {
+                // 使用新的StateGraph工作流
+                agentChatWorkflow.executeWorkflow(request, response -> {
+                    try {
+                        emitter.send(response);
+                        
+                        if (response.isDone() || response.getError() != null) {
+                            emitter.complete();
+                        }
+                    } catch (IOException e) {
+                        log.error("Error sending StateGraph stream response: " + e.getMessage());
+                        emitter.completeWithError(e);
+                    }
+                });
+            } catch (Exception e) {
+                log.error("StateGraph stream chat error: " + e.getMessage());
+                try {
+                    emitter.send(StreamResponse.error(e.getMessage()));
+                    emitter.complete();
+                } catch (IOException ex) {
+                    emitter.completeWithError(ex);
+                }
+            }
+        });
+        
+        return emitter;
+    }
+    
+    /**
+     * 获取StateGraph工作流信息
+     */
+    @GetMapping("/workflow-info")
+    public Object getWorkflowInfo() {
+        return agentChatWorkflow.getWorkflowInfo();
     }
     
     /**

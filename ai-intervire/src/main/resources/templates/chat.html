@@ -126,9 +126,14 @@
         }
         
         .thinking-step-content {
-            color: #6c757d;
+            color: #495057;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
+        }
+        
+        .thinking-step-content strong {
+            color: #2c3e50;
+            font-size: 0.95rem;
         }
         
         .deep-thinking-toggle {
@@ -147,6 +152,28 @@
         .thinking-progress .spinner-border {
             width: 1.5rem;
             height: 1.5rem;
+        }
+        
+        /* 流式输出样式 */
+        .stream-content {
+            display: inline;
+        }
+        
+        .stream-cursor {
+            display: inline;
+            animation: blink 1s infinite;
+            color: #667eea;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .streaming-complete .stream-cursor {
+            display: none;
         }
     </style>
 </head>
@@ -226,6 +253,9 @@
     <script th:inline="javascript">
         const sessionId = /*[[${sessionId}]]*/ 'default-session';
         
+        // 全局状态变量
+        let globalCurrentThinkingStep = null;
+        
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             const chatForm = document.getElementById('chatForm');
@@ -255,6 +285,11 @@
             // 显示用户消息
             addMessage('user', message);
             
+            // 禁用发送按钮
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+            
             // 根据是否启用深度思考显示不同的指示器
             if (deepThinkingEnabled) {
                 showThinkingProgress();
@@ -283,10 +318,33 @@
                 let currentThinkingStep = null;
                 let buffer = '';
                 
+                console.log('🚀 [DEBUG] Starting new chat request, variables initialized');
+                
+                // 清理之前的流式元素
+                const existingStream = document.getElementById('streaming-message');
+                if (existingStream) {
+                    existingStream.id = '';
+                }
+                const existingThinking = document.getElementById('thinking-steps-container');
+                if (existingThinking) {
+                    existingThinking.id = '';
+                }
+                
+                // 重置思考步骤状态
+                globalCurrentThinkingStep = null;
+                
                 function processStream() {
                     return reader.read().then(({done, value}) => {
                         if (done) {
                             hideAllIndicators();
+                            // 完成流式输出，移除光标
+                            const streamElement = document.getElementById('streaming-message');
+                            if (streamElement) {
+                                streamElement.classList.add('streaming-complete');
+                                streamElement.id = ''; // 移除ID，准备下次使用
+                            }
+                            // 恢复发送按钮
+                            resetSendButton();
                             return;
                         }
                         
@@ -299,76 +357,147 @@
                         buffer = lines.pop(); // 保留不完整的行
                         
                         for (const line of lines) {
-                            if (line.startsWith('data: ')) {
+                            if (line.startsWith('data:')) {
                                 try {
-                                    const jsonData = line.substring(6).trim();
+                                    const jsonData = line.substring(5).trim();
                                     if (jsonData === '') continue;
                                     const data = JSON.parse(jsonData);
-                                    console.log('Parsed data:', data);
+                                    console.log('🔍 [DEBUG] Parsed data:', data);
+                                    console.log('🔍 [DEBUG] Data type check:', {
+                                        hasError: !!data.error,
+                                        isDone: !!data.done,
+                                        hasCurrentStep: !!data.currentStep,
+                                        hasContent: !!data.content,
+                                        contentValue: data.content
+                                    });
                         
                                     if (data.error) {
                                         hideAllIndicators();
+                                        resetSendButton();
                                         addMessage('assistant', '抱歉，处理您的请求时出现错误: ' + data.error);
                                         return;
                                     }
                                     
                                     if (data.done) {
                                         hideAllIndicators();
+                                        // 完成流式输出，移除光标
+                                        const streamElement = document.getElementById('streaming-message');
+                                        if (streamElement) {
+                                            streamElement.classList.add('streaming-complete');
+                                            streamElement.id = ''; // 移除ID，准备下次使用
+                                        }
+                                        // 恢复发送按钮
+                                        resetSendButton();
                                         return;
                                     }
                                     
                                     if (data.currentStep) {
-                            // 显示思考步骤
-                            if (currentThinkingStep === null) {
-                                currentThinkingStep = document.createElement('div');
-                                currentThinkingStep.className = 'message assistant';
-                                currentThinkingStep.innerHTML = `
-                                    <div class="message-content">
-                                        <div class="thinking-steps">
-                                            <h6><i class="bi bi-lightbulb me-2"></i>深度思考过程</h6>
-                                        </div>
-                                    </div>
-                                `;
-                                const typingIndicator = document.getElementById('typingIndicator');
-                                chatMessages.insertBefore(currentThinkingStep, typingIndicator);
-                            }
-                            
-                            const stepDiv = document.createElement('div');
-                            stepDiv.className = `thinking-step ${data.currentStep.type.toLowerCase()}`;
-                            stepDiv.innerHTML = `
-                                <div class="thinking-step-title">
-                                    <i class="bi ${getStepIcon(data.currentStep.type)} thinking-step-icon"></i>
-                                    ${data.currentStep.title}
-                                </div>
-                                <div class="thinking-step-content">
-                                    ${data.currentStep.content}
-                                </div>
-                            `;
-                                        currentThinkingStep.querySelector('.thinking-steps').appendChild(stepDiv);
+                                        console.log('🧠 [DEBUG] 接收思考步骤:', data.currentStep);
+                                        console.log('🧠 [DEBUG] 步骤类型:', data.currentStep.type);
+                                        console.log('🧠 [DEBUG] 步骤标题:', data.currentStep.title);
+                                        console.log('🧠 [DEBUG] 步骤内容:', data.currentStep.content);
                                         
-                                    } else if (data.content) {
-                                        console.log('Received content:', data.content);
-                                        // 追加文本内容
+                                        // 显示思考步骤 - 累积模式
+                                        if (globalCurrentThinkingStep === null) {
+                                            // 隐藏思考进度指示器
+                                            hideThinkingProgress();
+                                            
+                                            // 确保没有重复的思考容器
+                                            const existingContainer = document.getElementById('thinking-steps-container');
+                                            if (existingContainer) {
+                                                existingContainer.remove();
+                                                console.log('🗑️ [DEBUG] Removed existing thinking container');
+                                            }
+                                            
+                                            // 创建思考内容累积容器
+                                            globalCurrentThinkingStep = document.createElement('div');
+                                            globalCurrentThinkingStep.className = 'message assistant';
+                                            globalCurrentThinkingStep.id = 'thinking-steps-container';
+                                            globalCurrentThinkingStep.innerHTML = `
+                                                <div class="message-content">
+                                                    <div class="thinking-steps">
+                                                        <h6><i class="bi bi-lightbulb me-2"></i>AI思考中...</h6>
+                                                        <div class="thinking-content" style="line-height: 1.6; color: #495057; font-size: 0.9rem; white-space: pre-wrap; background: #f8f9fa; padding: 10px; border-radius: 6px; border-left: 3px solid #007bff;"></div>
+                                                    </div>
+                                                </div>
+                                            `;
+                                            const typingIndicator = document.getElementById('typingIndicator');
+                                            chatMessages.insertBefore(globalCurrentThinkingStep, typingIndicator);
+                                            
+                                            console.log('✅ [DEBUG] Created new thinking content container for cumulative display');
+                                        }
+                                        
+                                        // 累积思考内容到同一个容器中
+                                        const thinkingContentDiv = globalCurrentThinkingStep.querySelector('.thinking-content');
+                                        const thinkingTitleH6 = globalCurrentThinkingStep.querySelector('h6');
+                                        
+                                        if (data.currentStep.title === '思考完成') {
+                                            // 更新标题为完成状态
+                                            if (thinkingTitleH6) {
+                                                thinkingTitleH6.innerHTML = '<i class="bi bi-check-circle me-2"></i>深度思考完成';
+                                            }
+                                            console.log('✅ [DEBUG] Thinking completed, title updated');
+                                        } else if (thinkingContentDiv && data.currentStep.content) {
+                                            const currentText = thinkingContentDiv.textContent || '';
+                                            const newContent = data.currentStep.content;
+                                            
+                                            // 避免重复添加相同内容
+                                            if (!currentText.includes(newContent)) {
+                                                // 累积内容，保持流式效果
+                                                thinkingContentDiv.textContent = currentText + newContent;
+                                                
+                                                console.log('✅ [DEBUG] Added thinking content:', newContent.substring(0, 50) + '...');
+                                                
+                                                // 滚动到思考步骤位置
+                                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                                            } else {
+                                                console.log('⚠️ [DEBUG] Duplicate thinking content ignored:', newContent.substring(0, 30) + '...');
+                                            }
+                                        } else {
+                                            console.error('❌ [DEBUG] Could not find thinking content container');
+                                        }
+                                        
+                                    } else if (data.hasOwnProperty('content')) {
+                                        console.log('📝 [DEBUG] Processing content:', data.content);
+                                        console.log('📝 [DEBUG] Current message before:', currentMessage);
+                                        
+                                        // 处理流式文本内容
                                         if (currentMessage === '') {
-                                            console.log('Creating new message element');
-                                            // 创建新的消息元素
+                                            console.log('🎬 [DEBUG] Creating new streaming message element');
+                                            // 隐藏所有指示器
+                                            hideAllIndicators();
+                                            
+                                            // 创建新的流式消息元素
                                             const messageDiv = document.createElement('div');
-                                            messageDiv.className = 'message assistant stream-message';
+                                            messageDiv.className = 'message assistant';
+                                            messageDiv.id = 'streaming-message';
                                             messageDiv.innerHTML = `
                                                 <div class="message-content">
                                                     <div class="stream-content"></div>
+                                                    <div class="stream-cursor">|</div>
                                                 </div>
                                             `;
                                             const typingIndicator = document.getElementById('typingIndicator');
                                             chatMessages.insertBefore(messageDiv, typingIndicator);
+                                            console.log('✅ [DEBUG] Streaming message element created');
                                         }
                                         
+                                        // 累积内容
                                         currentMessage += data.content;
-                                        const lastMessage = chatMessages.querySelector('.stream-message .stream-content');
-                                        console.log('Found stream element:', lastMessage);
-                                        if (lastMessage) {
-                                            lastMessage.textContent = currentMessage;
-                                            console.log('Updated message to:', currentMessage);
+                                        console.log('📝 [DEBUG] Current message after:', currentMessage);
+                                        
+                                        // 更新显示内容
+                                        const streamElement = document.getElementById('streaming-message');
+                                        if (streamElement) {
+                                            const contentElement = streamElement.querySelector('.stream-content');
+                                            if (contentElement) {
+                                                contentElement.textContent = currentMessage;
+                                                console.log('✅ [DEBUG] Content updated in DOM:', contentElement.textContent);
+                                            } else {
+                                                console.error('❌ [DEBUG] Could not find .stream-content element');
+                                            }
+                                        } else {
+                                            console.error('❌ [DEBUG] Could not find #streaming-message element');
                                         }
                                     }
                                     
@@ -390,6 +519,7 @@
             })
             .catch(error => {
                 hideAllIndicators();
+                resetSendButton();
                 console.error('Error:', error);
                 addMessage('assistant', '抱歉，网络连接出现问题，请稍后重试。');
             });
@@ -459,6 +589,13 @@
             hideThinkingProgress();
         }
         
+        // 恢复发送按钮状态
+        function resetSendButton() {
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = false;
+            sendButton.innerHTML = '<i class="bi bi-send"></i>';
+        }
+        
         // 添加思考步骤到聊天界面
         function addThinkingSteps(thinkingSteps) {
             const chatMessages = document.getElementById('chatMessages');
@@ -519,12 +656,15 @@
                     if (data.success) {
                         // 清除界面上的消息（保留欢迎消息）
                         const chatMessages = document.getElementById('chatMessages');
-                        const messages = chatMessages.querySelectorAll('.message:not(#typingIndicator)');
+                        const messages = chatMessages.querySelectorAll('.message:not(#typingIndicator):not(#thinkingProgress)');
                         messages.forEach((msg, index) => {
                             if (index > 0) { // 保留第一条欢迎消息
                                 msg.remove();
                             }
                         });
+                        
+                        // 重置全局思考状态
+                        globalCurrentThinkingStep = null;
                         
                         addMessage('assistant', '聊天记录已清除');
                     } else {

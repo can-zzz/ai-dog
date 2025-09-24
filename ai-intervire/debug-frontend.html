@@ -1,156 +1,157 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>前端调试页面</title>
+    <title>前端SSE调试</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
-        #messages { height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: #f9f9f9; }
-        .message { margin: 10px 0; padding: 10px; border-radius: 10px; }
-        .user { background: #e3f2fd; text-align: right; }
-        .assistant { background: #f3e5f5; }
-        .stream-message { background: #e8f5e8; }
-        .debug { background: #fff3cd; font-family: monospace; font-size: 12px; }
-        input[type="text"] { width: 300px; padding: 5px; }
-        button { padding: 8px 15px; margin: 5px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .output { background: #f5f5f5; padding: 10px; border-radius: 4px; font-family: monospace; min-height: 100px; max-height: 300px; overflow-y: auto; }
+        .button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        .button:hover { background: #0056b3; }
+        .input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
+        .log { background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; }
     </style>
 </head>
 <body>
-    <h1>AI助手前端调试页面</h1>
-    
-    <div class="test-section">
-        <h3>流式聊天测试</h3>
-        <input type="text" id="messageInput" placeholder="输入消息..." value="你好">
-        <button onclick="testStreamChat()">发送流式消息</button>
-        <button onclick="clearMessages()">清空消息</button>
-        <div id="messages"></div>
+    <div class="container">
+        <h1>前端SSE流式输出调试</h1>
+        
+        <div class="section">
+            <h3>测试输入</h3>
+            <input type="text" id="testMessage" class="input" value="你好，请介绍一下自己" placeholder="输入测试消息">
+            <button class="button" onclick="testSSE()">测试SSE流式输出</button>
+            <button class="button" onclick="clearAll()">清除所有输出</button>
+        </div>
+        
+        <div class="section">
+            <h3>输出结果</h3>
+            <div id="output" class="output">等待测试...</div>
+        </div>
+        
+        <div class="section">
+            <h3>调试日志</h3>
+            <div id="log" class="log">日志将在这里显示...</div>
+        </div>
     </div>
-
+    
     <script>
-        function addMessage(type, content, isDebug = false) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type} ${isDebug ? 'debug' : ''}`;
-            messageDiv.textContent = content;
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
         }
         
-        function clearMessages() {
-            document.getElementById('messages').innerHTML = '';
+        function clearAll() {
+            document.getElementById('output').innerHTML = '';
+            document.getElementById('log').innerHTML = '';
+            log('输出已清除');
         }
         
-        async function testStreamChat() {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
+        function testSSE() {
+            const message = document.getElementById('testMessage').value;
+            const outputDiv = document.getElementById('output');
             
-            if (!message) {
-                alert('请输入消息');
-                return;
-            }
+            log('开始SSE测试');
+            log(`发送消息: ${message}`);
             
-            // 添加用户消息
-            addMessage('user', message);
-            addMessage('debug', '开始发送请求...', true);
+            outputDiv.innerHTML = '';
+            let accumulatedText = '';
             
-            try {
-                const response = await fetch('/api/stream/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'text/event-stream'
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        sessionId: 'debug-session',
-                        saveHistory: true,
-                        enableDeepThinking: false
-                    })
-                });
+            const requestBody = {
+                message: message,
+                sessionId: 'debug-test-' + Date.now(),
+                saveHistory: false,
+                enableDeepThinking: false
+            };
+            
+            log(`请求体: ${JSON.stringify(requestBody)}`);
+            
+            fetch('/api/stream/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                log(`HTTP状态: ${response.status}`);
+                log(`Content-Type: ${response.headers.get('content-type')}`);
                 
-                addMessage('debug', '收到响应，开始处理流...', true);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
                 
                 const reader = response.body.getReader();
                 let buffer = '';
-                let currentMessage = '';
-                let messageElement = null;
                 
-                function processStream() {
+                function processChunk() {
                     return reader.read().then(({done, value}) => {
                         if (done) {
-                            addMessage('debug', '流处理完成', true);
+                            log('✅ SSE流完成');
                             return;
                         }
                         
                         const chunk = new TextDecoder().decode(value);
                         buffer += chunk;
-                        addMessage('debug', `收到chunk: ${chunk}`, true);
+                        log(`接收数据块: ${chunk.length} 字节`);
                         
-                        const lines = buffer.split('\\n');
-                        buffer = lines.pop();
+                        // 处理完整的SSE消息
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop() || ''; // 保留不完整的行
                         
                         for (const line of lines) {
                             if (line.startsWith('data: ')) {
+                                const jsonData = line.substring(6).trim();
+                                if (jsonData === '') continue;
+                                
                                 try {
-                                    const jsonData = line.substring(6).trim();
-                                    if (jsonData === '') continue;
                                     const data = JSON.parse(jsonData);
-                                    
-                                    addMessage('debug', `解析数据: ${JSON.stringify(data)}`, true);
+                                    log(`解析数据: ${JSON.stringify(data)}`);
                                     
                                     if (data.error) {
-                                        addMessage('assistant', '错误: ' + data.error);
+                                        log(`❌ 错误: ${data.error}`);
+                                        outputDiv.innerHTML += `<div style="color: red;">错误: ${data.error}</div>`;
                                         return;
+                                    }
+                                    
+                                    if (data.content !== null && data.content !== undefined) {
+                                        accumulatedText += data.content;
+                                        outputDiv.textContent = accumulatedText;
+                                        log(`累积文本长度: ${accumulatedText.length}`);
                                     }
                                     
                                     if (data.done) {
-                                        addMessage('debug', '收到完成信号', true);
+                                        log('✅ 接收到完成标志');
                                         return;
                                     }
                                     
-                                    if (data.content) {
-                                        if (currentMessage === '') {
-                                            // 创建新的消息元素
-                                            const messagesDiv = document.getElementById('messages');
-                                            messageElement = document.createElement('div');
-                                            messageElement.className = 'message assistant stream-message';
-                                            messageElement.textContent = '';
-                                            messagesDiv.appendChild(messageElement);
-                                        }
-                                        
-                                        currentMessage += data.content;
-                                        if (messageElement) {
-                                            messageElement.textContent = currentMessage;
-                                        }
-                                        
-                                        // 滚动到底部
-                                        const messagesDiv = document.getElementById('messages');
-                                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                                    }
                                 } catch (e) {
-                                    addMessage('debug', `JSON解析错误: ${e.message}, 数据: ${jsonData}`, true);
+                                    log(`❌ JSON解析错误: ${e.message}`);
+                                    log(`原始数据: ${jsonData}`);
                                 }
                             }
                         }
                         
-                        return processStream();
+                        return processChunk();
                     });
                 }
                 
-                await processStream();
-                
-            } catch (error) {
-                addMessage('assistant', '网络错误: ' + error.message);
-                addMessage('debug', `错误详情: ${error.stack}`, true);
-            }
+                return processChunk();
+            })
+            .catch(error => {
+                log(`❌ 请求错误: ${error.message}`);
+                outputDiv.innerHTML = `<div style="color: red;">错误: ${error.message}</div>`;
+            });
         }
         
-        // 页面加载时自动测试
-        window.onload = function() {
-            addMessage('debug', '页面加载完成，准备测试', true);
-        };
+        // 页面加载时的初始化
+        log('🚀 调试页面已加载');
+        log('准备测试SSE流式输出功能');
     </script>
 </body>
 </html>

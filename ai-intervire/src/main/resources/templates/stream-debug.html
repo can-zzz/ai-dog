@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流式数据调试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .log-area {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        
+        .message-area {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            min-height: 100px;
+            border: 2px solid #2196F3;
+        }
+        
+        .stream-content {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .stream-cursor {
+            display: inline;
+            animation: blink 1s infinite;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .test-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .test-button:hover {
+            background: #1976D2;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            background: #f1f8e9;
+        }
+        
+        .error {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 流式数据调试页面</h1>
+        
+        <div class="test-section">
+            <h3>📋 测试控制</h3>
+            <button class="test-button" onclick="testSimpleMessage()">测试简单消息</button>
+            <button class="test-button" onclick="testStreamWithThinking()">测试带思考的流式</button>
+            <button class="test-button" onclick="clearAll()">清空所有</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📺 消息显示区域</h3>
+            <div class="message-area" id="messageArea">
+                <div class="stream-content" id="streamContent"></div>
+                <div class="stream-cursor" id="streamCursor">|</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 状态信息</h3>
+            <div id="statusArea"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 调试日志</h3>
+            <div class="log-area" id="logArea"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentMessage = '';
+        let logCount = 0;
+        
+        function log(message) {
+            const logArea = document.getElementById('logArea');
+            const timestamp = new Date().toLocaleTimeString();
+            logArea.textContent += `[${timestamp}] ${message}\n`;
+            logArea.scrollTop = logArea.scrollHeight;
+            logCount++;
+        }
+        
+        function addStatus(message, isError = false) {
+            const statusArea = document.getElementById('statusArea');
+            const div = document.createElement('div');
+            div.className = 'status' + (isError ? ' error' : '');
+            div.innerHTML = (isError ? '❌' : '✅') + ' ' + message;
+            statusArea.appendChild(div);
+        }
+        
+        function clearAll() {
+            document.getElementById('logArea').textContent = '';
+            document.getElementById('statusArea').innerHTML = '';
+            document.getElementById('streamContent').textContent = '';
+            currentMessage = '';
+            logCount = 0;
+            log('🧹 清空完成');
+        }
+        
+        function updateStreamContent(content) {
+            const streamContent = document.getElementById('streamContent');
+            streamContent.textContent = content;
+            log(`📝 更新内容: "${content}" (长度: ${content.length})`);
+        }
+        
+        function testSimpleMessage() {
+            log('🚀 开始测试简单消息');
+            addStatus('开始测试简单消息');
+            
+            fetch('/api/stream/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({
+                    message: '你好',
+                    sessionId: 'debug-test-' + Date.now(),
+                    saveHistory: false,
+                    enableDeepThinking: false
+                })
+            })
+            .then(response => {
+                log(`📡 HTTP响应: ${response.status} ${response.statusText}`);
+                
+                const reader = response.body.getReader();
+                let buffer = '';
+                currentMessage = '';
+                
+                function processStream() {
+                    return reader.read().then(({done, value}) => {
+                        if (done) {
+                            log('🏁 流式传输完成');
+                            addStatus('流式传输完成');
+                            document.getElementById('streamCursor').style.display = 'none';
+                            return;
+                        }
+                        
+                        const chunk = new TextDecoder().decode(value);
+                        buffer += chunk;
+                        log(`📦 接收数据块: "${chunk}" (长度: ${chunk.length})`);
+                        
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop();
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const jsonData = line.substring(6).trim();
+                                    if (jsonData === '') continue;
+                                    
+                                    log(`🔍 解析JSON: "${jsonData}"`);
+                                    const data = JSON.parse(jsonData);
+                                    log(`📋 解析结果: ${JSON.stringify(data)}`);
+                                    
+                                    if (data.error) {
+                                        log(`❌ 错误: ${data.error}`);
+                                        addStatus('发生错误: ' + data.error, true);
+                                        return;
+                                    }
+                                    
+                                    if (data.done) {
+                                        log('✅ 接收到完成信号');
+                                        addStatus('接收到完成信号');
+                                        document.getElementById('streamCursor').style.display = 'none';
+                                        return;
+                                    }
+                                    
+                                    if (data.content !== null && data.content !== undefined) {
+                                        log(`📝 接收内容: "${data.content}"`);
+                                        currentMessage += data.content;
+                                        updateStreamContent(currentMessage);
+                                        addStatus(`接收内容块: ${data.content.length} 字符`);
+                                    }
+                                    
+                                } catch (e) {
+                                    log(`❌ JSON解析错误: ${e.message}`);
+                                    addStatus('JSON解析错误: ' + e.message, true);
+                                }
+                            }
+                        }
+                        
+                        return processStream();
+                    });
+                }
+                
+                return processStream();
+            })
+            .catch(error => {
+                log(`❌ 请求失败: ${error.message}`);
+                addStatus('请求失败: ' + error.message, true);
+            });
+        }
+        
+        function testStreamWithThinking() {
+            log('🚀 开始测试带思考的流式');
+            addStatus('开始测试带思考的流式');
+            
+            fetch('/api/stream/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({
+                    message: '解释一下人工智能的原理',
+                    sessionId: 'debug-thinking-' + Date.now(),
+                    saveHistory: false,
+                    enableDeepThinking: true
+                })
+            })
+            .then(response => {
+                log(`📡 HTTP响应: ${response.status} ${response.statusText}`);
+                
+                const reader = response.body.getReader();
+                let buffer = '';
+                currentMessage = '';
+                
+                function processStream() {
+                    return reader.read().then(({done, value}) => {
+                        if (done) {
+                            log('🏁 流式传输完成');
+                            addStatus('流式传输完成');
+                            document.getElementById('streamCursor').style.display = 'none';
+                            return;
+                        }
+                        
+                        const chunk = new TextDecoder().decode(value);
+                        buffer += chunk;
+                        log(`📦 接收数据块: "${chunk.substring(0, 100)}..." (长度: ${chunk.length})`);
+                        
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop();
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const jsonData = line.substring(6).trim();
+                                    if (jsonData === '') continue;
+                                    
+                                    const data = JSON.parse(jsonData);
+                                    
+                                    if (data.error) {
+                                        log(`❌ 错误: ${data.error}`);
+                                        addStatus('发生错误: ' + data.error, true);
+                                        return;
+                                    }
+                                    
+                                    if (data.done) {
+                                        log('✅ 接收到完成信号');
+                                        addStatus('接收到完成信号');
+                                        document.getElementById('streamCursor').style.display = 'none';
+                                        return;
+                                    }
+                                    
+                                    if (data.currentStep) {
+                                        log(`🧠 思考步骤: ${data.currentStep.type} - ${data.currentStep.title}`);
+                                        addStatus(`思考步骤: ${data.currentStep.title}`);
+                                    }
+                                    
+                                    if (data.content !== null && data.content !== undefined) {
+                                        log(`📝 接收内容: "${data.content.substring(0, 50)}..."`);
+                                        currentMessage += data.content;
+                                        updateStreamContent(currentMessage);
+                                        addStatus(`接收内容块: ${data.content.length} 字符`);
+                                    }
+                                    
+                                } catch (e) {
+                                    log(`❌ JSON解析错误: ${e.message}, 原始数据: "${jsonData}"`);
+                                    addStatus('JSON解析错误: ' + e.message, true);
+                                }
+                            }
+                        }
+                        
+                        return processStream();
+                    });
+                }
+                
+                return processStream();
+            })
+            .catch(error => {
+                log(`❌ 请求失败: ${error.message}`);
+                addStatus('请求失败: ' + error.message, true);
+            });
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🎉 调试页面加载完成');
+            addStatus('调试页面初始化完成');
+        });
+    </script>
+</body>
+</html>

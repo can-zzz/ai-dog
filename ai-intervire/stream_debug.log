@@ -1,0 +1,321 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.can:ai-assistant >------------------------
+[INFO] Building ai-assistant 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.2.3:run (default-cli) > test-compile @ ai-assistant >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ai-assistant ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ ai-assistant ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ai-assistant ---
+[INFO] skip non existing resourceDirectory /Users/can/Documents/ai/ai-intervire/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ ai-assistant ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot:3.2.3:run (default-cli) < test-compile @ ai-assistant <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.2.3:run (default-cli) @ ai-assistant ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v3.2.3)[0;39m
+
+16:31:00.141 [main] INFO  c.c.a.AiAssistantApplication - Starting AiAssistantApplication using Java 23.0.2 with PID 9422 (/Users/can/Documents/ai/ai-intervire/target/classes started by can in /Users/can/Documents/ai/ai-intervire)
+16:31:00.142 [main] INFO  c.c.a.AiAssistantApplication - No active profile set, falling back to 1 default profile: "default"
+16:31:00.676 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+16:31:00.682 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+16:31:00.682 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+16:31:00.709 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+16:31:00.710 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 544 ms
+16:31:00.900 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+16:31:01.013 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path ''
+16:31:01.018 [main] INFO  c.c.a.AiAssistantApplication - Started AiAssistantApplication in 1.115 seconds (process running for 1.6)
+16:31:01.019 [main] INFO  c.c.a.AiAssistantApplication - ===========================================
+16:31:01.019 [main] INFO  c.c.a.AiAssistantApplication - AI智能助手启动成功！
+16:31:01.019 [main] INFO  c.c.a.AiAssistantApplication - 访问地址: http://localhost:8081
+16:31:01.019 [main] INFO  c.c.a.AiAssistantApplication - 健康检查: http://localhost:8081/api/ai/health
+16:31:01.019 [main] INFO  c.c.a.AiAssistantApplication - ===========================================
+16:31:01.106 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+16:31:01.106 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+16:31:01.107 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+16:31:08.555 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - === 流式聊天请求开始 ===
+16:31:08.555 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 会话ID: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.555 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 用户消息: sarq
+16:31:08.555 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 深度思考: false
+16:31:08.556 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 超时配置: 300000ms
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🤖 智能体执行开始
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 📋 执行预处理阶段
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.RequestPreprocessor - 🔄 开始预处理请求
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 路由: 标准对话, 耗时: 0ms
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 0ms
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 🧠 加载上下文 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.557 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - ✅ 上下文加载完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+16:31:08.558 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 1ms
+16:31:08.558 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.558 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 📝 响应生成开始 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 路由: 标准对话
+16:31:08.558 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.558 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 🧠 执行上下文感知生成
+16:31:08.558 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ⚠️ 没有历史上下文 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.558 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证流式调用参数 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:08.558 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 📡 开始流式AI模型调用 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 模型: qwen-turbo, 消息数: 2
+16:31:08.921 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🌐 HTTP响应已接收 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 响应时间: 354ms, 状态码: 200
+16:31:08.921 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ⚡ 首个数据块已接收 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 首块延迟: 354ms
+16:31:11.982 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🏁 流式响应结束标记 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 总块数: 29
+16:31:11.983 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ✅ 流式响应处理完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 总耗时: 3425ms, 总块数: 29, 首块延迟: 354ms, 消息长度: 157字符
+16:31:12.004 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 157, 内容: 看起来您输入的是 "sarq"，这可能是一个拼写错误或不完整的词语。为了更好地帮助您，请提供更多的上...
+16:31:12.013 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ✅ 响应生成完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 策略: 上下文感知生成, 耗时: 3454ms
+16:31:12.016 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 3458ms
+16:31:12.050 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:12.051 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 💾 保存上下文 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:12.054 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 💾 保存AI响应 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 响应长度: 157, 内容: 看起来您输入的是 "sarq"，这可能是一个拼写错误或不完整的词语。为了更好地帮助您，请提供更多的上...
+16:31:12.055 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - ✅ 上下文保存完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 耗时: 4ms
+16:31:12.056 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 5ms
+16:31:12.056 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:12.056 [pool-2-thread-1] INFO  c.c.a.service.PostProcessor - 🔄 后处理开始 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2
+16:31:12.059 [pool-2-thread-1] ERROR c.c.a.service.PostProcessor - ❌ 后处理失败 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 错误: ResponseBodyEmitter has already completed, 耗时: 3ms
+16:31:12.059 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 后处理完成 - 耗时: 3ms
+16:31:12.059 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🎉 智能体执行完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 总耗时: 3502ms
+16:31:12.066 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - ✅ 流式聊天完成 - 会话: 393cb439-1c40-4e7a-a5e2-59bf9f8792e2, 总处理时长: 3511ms
+16:31:12.067 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - === 流式聊天请求结束 ===
+16:31:47.639 [http-nio-8081-exec-3] INFO  c.c.a.controller.StreamController - === 流式聊天请求开始 ===
+16:31:47.639 [http-nio-8081-exec-3] INFO  c.c.a.controller.StreamController - 会话ID: debug-test-1758702707626
+16:31:47.640 [http-nio-8081-exec-3] INFO  c.c.a.controller.StreamController - 用户消息: 你好
+16:31:47.640 [http-nio-8081-exec-3] INFO  c.c.a.controller.StreamController - 深度思考: false
+16:31:47.640 [http-nio-8081-exec-3] INFO  c.c.a.controller.StreamController - 超时配置: 300000ms
+16:31:47.641 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🤖 智能体执行开始
+16:31:47.641 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 📋 执行预处理阶段
+16:31:47.641 [pool-2-thread-1] INFO  c.c.a.service.RequestPreprocessor - 🔄 开始预处理请求
+16:31:47.641 [pool-2-thread-1] INFO  c.c.a.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: debug-test-1758702707626, 路由: 简单对话, 耗时: 0ms
+16:31:47.641 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 预处理完成 - 路由: 简单对话, 耗时: 0ms
+16:31:47.641 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: debug-test-1758702707626
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 🧠 加载上下文 - 会话: debug-test-1758702707626
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - ✅ 上下文加载完成 - 会话: debug-test-1758702707626, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 0ms
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: debug-test-1758702707626
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 📝 响应生成开始 - 会话: debug-test-1758702707626, 路由: 简单对话
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 🎯 生成策略: 简单生成 - 会话: debug-test-1758702707626
+16:31:47.642 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 💬 执行简单生成
+16:31:47.644 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证流式调用参数 - 会话: unknown
+16:31:47.644 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 📡 开始流式AI模型调用 - 会话: unknown, 模型: qwen-turbo, 消息数: 2
+16:31:47.835 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🌐 HTTP响应已接收 - 会话: unknown, 响应时间: 190ms, 状态码: 200
+16:31:47.835 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ⚡ 首个数据块已接收 - 会话: unknown, 首块延迟: 190ms
+16:31:48.816 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🏁 流式响应结束标记 - 会话: unknown, 总块数: 10
+16:31:48.817 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ✅ 流式响应处理完成 - 会话: unknown, 总耗时: 1174ms, 总块数: 10, 首块延迟: 190ms, 消息长度: 23字符
+16:31:48.819 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 23, 内容: 你好！很高兴见到你，有什么我可以帮你的吗？😊...
+16:31:48.819 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ✅ 响应生成完成 - 会话: debug-test-1758702707626, 策略: 简单生成, 耗时: 1177ms
+16:31:48.819 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 1177ms
+16:31:48.819 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: debug-test-1758702707626
+16:31:48.819 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 💾 保存上下文 - 会话: debug-test-1758702707626
+16:31:48.820 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 💾 保存AI响应 - 会话: debug-test-1758702707626, 响应长度: 23, 内容: 你好！很高兴见到你，有什么我可以帮你的吗？😊...
+16:31:48.820 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - ✅ 上下文保存完成 - 会话: debug-test-1758702707626, 耗时: 1ms
+16:31:48.820 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 1ms
+16:31:48.820 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: debug-test-1758702707626
+16:31:48.820 [pool-2-thread-1] INFO  c.c.a.service.PostProcessor - 🔄 后处理开始 - 会话: debug-test-1758702707626
+16:31:48.821 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - ✅ 流式聊天完成 - 会话: debug-test-1758702707626, 总处理时长: 1182ms
+16:31:48.821 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - === 流式聊天请求结束 ===
+16:31:48.826 [pool-2-thread-1] ERROR c.c.a.service.PostProcessor - ❌ 后处理失败 - 会话: debug-test-1758702707626, 错误: ResponseBodyEmitter has already completed, 耗时: 6ms
+16:31:48.826 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 后处理完成 - 耗时: 6ms
+16:31:48.826 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🎉 智能体执行完成 - 会话: debug-test-1758702707626, 总耗时: 1185ms
+16:31:52.634 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - === 流式聊天请求开始 ===
+16:31:52.635 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 会话ID: debug-thinking-1758702712629
+16:31:52.635 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 用户消息: 解释一下人工智能的原理
+16:31:52.635 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 深度思考: true
+16:31:52.635 [http-nio-8081-exec-6] INFO  c.c.a.controller.StreamController - 超时配置: 300000ms
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🤖 智能体执行开始
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 📋 执行预处理阶段
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.RequestPreprocessor - 🔄 开始预处理请求
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: debug-thinking-1758702712629, 路由: 复杂深度思考+工具, 耗时: 0ms
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 预处理完成 - 路由: 复杂深度思考+工具, 耗时: 0ms
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: debug-thinking-1758702712629
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 🧠 加载上下文 - 会话: debug-thinking-1758702712629
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - ✅ 上下文加载完成 - 会话: debug-thinking-1758702712629, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 0ms
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🤔 执行思考阶段 - 会话: debug-thinking-1758702712629
+16:31:52.635 [pool-2-thread-1] INFO  c.c.a.service.ThinkingExecutor - 🧠 思考执行器开始 - 会话: debug-thinking-1758702712629
+16:31:52.636 [pool-2-thread-1] INFO  c.c.a.service.ThinkingExecutor - 🎯 思考策略: 通用思考 - 会话: debug-thinking-1758702712629
+16:31:52.646 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🧠 开始构建自定义深度思考消息 - 会话: debug-thinking-1758702712629
+16:31:52.646 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证思考模型调用参数 - 会话: debug-thinking-1758702712629, 模型: qwen-max
+16:31:52.647 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 📡 开始流式思考模型调用 - 会话: debug-thinking-1758702712629, 模型: qwen-max, 消息数: 2
+16:31:53.314 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🌐 思考模型HTTP响应已接收 - 会话: debug-thinking-1758702712629, 响应时间: 667ms, 状态码: 200
+16:31:53.315 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ⚡ 思考模型首个数据块已接收 - 会话: debug-thinking-1758702712629, 首块延迟: 668ms
+16:32:03.299 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - === 流式聊天请求开始 ===
+16:32:03.299 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - 会话ID: debug-test-1758702723289
+16:32:03.299 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - 用户消息: 你好
+16:32:03.300 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - 深度思考: false
+16:32:03.300 [http-nio-8081-exec-7] INFO  c.c.a.controller.StreamController - 超时配置: 300000ms
+16:32:03.300 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🤖 智能体执行开始
+16:32:03.300 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 📋 执行预处理阶段
+16:32:03.300 [pool-2-thread-2] INFO  c.c.a.service.RequestPreprocessor - 🔄 开始预处理请求
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: debug-test-1758702723289, 路由: 简单对话, 耗时: 1ms
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 预处理完成 - 路由: 简单对话, 耗时: 1ms
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: debug-test-1758702723289
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 🧠 加载上下文 - 会话: debug-test-1758702723289
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - ✅ 上下文加载完成 - 会话: debug-test-1758702723289, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 0ms
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: debug-test-1758702723289
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 📝 响应生成开始 - 会话: debug-test-1758702723289, 路由: 简单对话
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 🎯 生成策略: 简单生成 - 会话: debug-test-1758702723289
+16:32:03.301 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 💬 执行简单生成
+16:32:03.301 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证流式调用参数 - 会话: unknown
+16:32:03.301 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 📡 开始流式AI模型调用 - 会话: unknown, 模型: qwen-turbo, 消息数: 2
+16:32:03.551 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🌐 HTTP响应已接收 - 会话: unknown, 响应时间: 249ms, 状态码: 200
+16:32:03.552 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ⚡ 首个数据块已接收 - 会话: unknown, 首块延迟: 250ms
+16:32:04.524 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🏁 流式响应结束标记 - 会话: unknown, 总块数: 10
+16:32:04.524 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ✅ 流式响应处理完成 - 会话: unknown, 总耗时: 1223ms, 总块数: 10, 首块延迟: 250ms, 消息长度: 23字符
+16:32:04.526 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 23, 内容: 你好！很高兴见到你，有什么我可以帮你的吗？😊...
+16:32:04.527 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - ✅ 响应生成完成 - 会话: debug-test-1758702723289, 策略: 简单生成, 耗时: 1226ms
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 1227ms
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: debug-test-1758702723289
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 💾 保存上下文 - 会话: debug-test-1758702723289
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 💾 保存AI响应 - 会话: debug-test-1758702723289, 响应长度: 23, 内容: 你好！很高兴见到你，有什么我可以帮你的吗？😊...
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - ✅ 上下文保存完成 - 会话: debug-test-1758702723289, 耗时: 0ms
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: debug-test-1758702723289
+16:32:04.528 [pool-2-thread-2] INFO  c.c.a.service.PostProcessor - 🔄 后处理开始 - 会话: debug-test-1758702723289
+16:32:04.528 [pool-2-thread-2] ERROR c.c.a.service.PostProcessor - ❌ 后处理失败 - 会话: debug-test-1758702723289, 错误: ResponseBodyEmitter has already completed, 耗时: 0ms
+16:32:04.529 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 后处理完成 - 耗时: 1ms
+16:32:04.529 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🎉 智能体执行完成 - 会话: debug-test-1758702723289, 总耗时: 1229ms
+16:32:04.529 [http-nio-8081-exec-8] INFO  c.c.a.controller.StreamController - ✅ 流式聊天完成 - 会话: debug-test-1758702723289, 总处理时长: 1230ms
+16:32:04.529 [http-nio-8081-exec-8] INFO  c.c.a.controller.StreamController - === 流式聊天请求结束 ===
+16:32:06.774 [http-nio-8081-exec-9] INFO  c.c.a.controller.StreamController - === 流式聊天请求开始 ===
+16:32:06.775 [http-nio-8081-exec-9] INFO  c.c.a.controller.StreamController - 会话ID: debug-thinking-1758702726766
+16:32:06.775 [http-nio-8081-exec-9] INFO  c.c.a.controller.StreamController - 用户消息: 解释一下人工智能的原理
+16:32:06.775 [http-nio-8081-exec-9] INFO  c.c.a.controller.StreamController - 深度思考: true
+16:32:06.775 [http-nio-8081-exec-9] INFO  c.c.a.controller.StreamController - 超时配置: 300000ms
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🤖 智能体执行开始
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 📋 执行预处理阶段
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.RequestPreprocessor - 🔄 开始预处理请求
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: debug-thinking-1758702726766, 路由: 复杂深度思考+工具, 耗时: 0ms
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 预处理完成 - 路由: 复杂深度思考+工具, 耗时: 0ms
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: debug-thinking-1758702726766
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 🧠 加载上下文 - 会话: debug-thinking-1758702726766
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - ✅ 上下文加载完成 - 会话: debug-thinking-1758702726766, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 0ms
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🤔 执行思考阶段 - 会话: debug-thinking-1758702726766
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.ThinkingExecutor - 🧠 思考执行器开始 - 会话: debug-thinking-1758702726766
+16:32:06.775 [pool-2-thread-2] INFO  c.c.a.service.ThinkingExecutor - 🎯 思考策略: 通用思考 - 会话: debug-thinking-1758702726766
+16:32:06.776 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🧠 开始构建自定义深度思考消息 - 会话: debug-thinking-1758702726766
+16:32:06.777 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证思考模型调用参数 - 会话: debug-thinking-1758702726766, 模型: qwen-max
+16:32:06.777 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 📡 开始流式思考模型调用 - 会话: debug-thinking-1758702726766, 模型: qwen-max, 消息数: 2
+16:32:07.263 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🌐 思考模型HTTP响应已接收 - 会话: debug-thinking-1758702726766, 响应时间: 486ms, 状态码: 200
+16:32:07.264 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ⚡ 思考模型首个数据块已接收 - 会话: debug-thinking-1758702726766, 首块延迟: 487ms
+16:32:23.500 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🏁 思考模型流式响应结束 - 会话: debug-thinking-1758702712629, 总块数: 121
+16:32:23.500 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ✅ 思考模型流式响应处理完成 - 会话: debug-thinking-1758702712629, 总耗时: 30854ms, 总块数: 121, 首块延迟: 668ms, 思考内容长度: 1033字符
+16:32:23.502 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🤖 策略思考模型调用完成 - 会话: debug-thinking-1758702712629, 耗时: 30855ms
+16:32:23.502 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ✅ 策略思考步骤完成 - 会话: debug-thinking-1758702712629, 总耗时: 30856ms
+16:32:23.503 [pool-2-thread-1] INFO  c.c.a.service.ThinkingExecutor - ✅ 思考执行完成 - 会话: debug-thinking-1758702712629, 策略: 通用思考, 耗时: 30868ms
+16:32:23.503 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 思考阶段完成 - 耗时: 30868ms
+16:32:23.503 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🔧 执行函数调用阶段 - 会话: debug-thinking-1758702712629
+16:32:23.503 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 函数调用完成 - 耗时: 0ms
+16:32:23.503 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: debug-thinking-1758702712629
+16:32:23.503 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 📝 响应生成开始 - 会话: debug-thinking-1758702712629, 路由: 复杂深度思考+工具
+16:32:23.504 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 🎯 生成策略: 基于思考生成 - 会话: debug-thinking-1758702712629
+16:32:23.504 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - 🤔 执行基于思考的生成
+16:32:23.506 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证流式调用参数 - 会话: debug-thinking-1758702712629
+16:32:23.506 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 📡 开始流式AI模型调用 - 会话: debug-thinking-1758702712629, 模型: qwen-turbo, 消息数: 3
+16:32:23.781 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🌐 HTTP响应已接收 - 会话: debug-thinking-1758702712629, 响应时间: 275ms, 状态码: 200
+16:32:23.782 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ⚡ 首个数据块已接收 - 会话: debug-thinking-1758702712629, 首块延迟: 276ms
+16:32:35.466 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - 🏁 流式响应结束标记 - 会话: debug-thinking-1758702712629, 总块数: 109
+16:32:35.466 [pool-2-thread-1] INFO  c.can.aiassistant.service.AiService - ✅ 流式响应处理完成 - 会话: debug-thinking-1758702712629, 总耗时: 11960ms, 总块数: 109, 首块延迟: 276ms, 消息长度: 772字符
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 787, 内容: 基于深度思考结果生成回答...人工智能（Artificial Intelligence，简称AI）是...
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.ResponseGenerator - ✅ 响应生成完成 - 会话: debug-thinking-1758702712629, 策略: 基于思考生成, 耗时: 11964ms
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 11964ms
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: debug-thinking-1758702712629
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 💾 保存上下文 - 会话: debug-thinking-1758702712629
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - 💾 保存AI响应 - 会话: debug-thinking-1758702712629, 响应长度: 787, 内容: 基于深度思考结果生成回答...人工智能（Artificial Intelligence，简称AI）是...
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.MemoryManager - ✅ 上下文保存完成 - 会话: debug-thinking-1758702712629, 耗时: 0ms
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: debug-thinking-1758702712629
+16:32:35.467 [pool-2-thread-1] INFO  c.c.a.service.PostProcessor - 🔄 后处理开始 - 会话: debug-thinking-1758702712629
+16:32:35.468 [pool-2-thread-1] ERROR c.c.a.service.PostProcessor - ❌ 后处理失败 - 会话: debug-thinking-1758702712629, 错误: ResponseBodyEmitter has already completed, 耗时: 1ms
+16:32:35.468 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - ✅ 后处理完成 - 耗时: 1ms
+16:32:35.468 [pool-2-thread-1] INFO  c.c.a.service.AgentExecutor - 🎉 智能体执行完成 - 会话: debug-thinking-1758702712629, 总耗时: 42833ms
+16:32:35.469 [http-nio-8081-exec-10] INFO  c.c.a.controller.StreamController - ✅ 流式聊天完成 - 会话: debug-thinking-1758702712629, 总处理时长: 42835ms
+16:32:35.469 [http-nio-8081-exec-10] INFO  c.c.a.controller.StreamController - === 流式聊天请求结束 ===
+16:32:39.657 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🏁 思考模型流式响应结束 - 会话: debug-thinking-1758702726766, 总块数: 115
+16:32:39.658 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ✅ 思考模型流式响应处理完成 - 会话: debug-thinking-1758702726766, 总耗时: 32881ms, 总块数: 115, 首块延迟: 487ms, 思考内容长度: 941字符
+16:32:39.659 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🤖 策略思考模型调用完成 - 会话: debug-thinking-1758702726766, 耗时: 32882ms
+16:32:39.659 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ✅ 策略思考步骤完成 - 会话: debug-thinking-1758702726766, 总耗时: 32883ms
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.ThinkingExecutor - ✅ 思考执行完成 - 会话: debug-thinking-1758702726766, 策略: 通用思考, 耗时: 32884ms
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 思考阶段完成 - 耗时: 32884ms
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🔧 执行函数调用阶段 - 会话: debug-thinking-1758702726766
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 函数调用完成 - 耗时: 0ms
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: debug-thinking-1758702726766
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 📝 响应生成开始 - 会话: debug-thinking-1758702726766, 路由: 复杂深度思考+工具
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 🎯 生成策略: 基于思考生成 - 会话: debug-thinking-1758702726766
+16:32:39.659 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 🤔 执行基于思考的生成
+16:32:39.660 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证流式调用参数 - 会话: debug-thinking-1758702726766
+16:32:39.660 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 📡 开始流式AI模型调用 - 会话: debug-thinking-1758702726766, 模型: qwen-turbo, 消息数: 3
+16:32:39.872 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🌐 HTTP响应已接收 - 会话: debug-thinking-1758702726766, 响应时间: 211ms, 状态码: 200
+16:32:39.873 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ⚡ 首个数据块已接收 - 会话: debug-thinking-1758702726766, 首块延迟: 212ms
+16:32:51.637 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🏁 流式响应结束标记 - 会话: debug-thinking-1758702726766, 总块数: 110
+16:32:51.637 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ✅ 流式响应处理完成 - 会话: debug-thinking-1758702726766, 总耗时: 11977ms, 总块数: 110, 首块延迟: 212ms, 消息长度: 823字符
+16:32:51.638 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 838, 内容: 基于深度思考结果生成回答...人工智能（Artificial Intelligence，简称AI）是...
+16:32:51.638 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - ✅ 响应生成完成 - 会话: debug-thinking-1758702726766, 策略: 基于思考生成, 耗时: 11979ms
+16:32:51.638 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 11979ms
+16:32:51.638 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: debug-thinking-1758702726766
+16:32:51.638 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 💾 保存上下文 - 会话: debug-thinking-1758702726766
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 💾 保存AI响应 - 会话: debug-thinking-1758702726766, 响应长度: 838, 内容: 基于深度思考结果生成回答...人工智能（Artificial Intelligence，简称AI）是...
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - ✅ 上下文保存完成 - 会话: debug-thinking-1758702726766, 耗时: 1ms
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 1ms
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: debug-thinking-1758702726766
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.PostProcessor - 🔄 后处理开始 - 会话: debug-thinking-1758702726766
+16:32:51.639 [http-nio-8081-exec-2] INFO  c.c.a.controller.StreamController - ✅ 流式聊天完成 - 会话: debug-thinking-1758702726766, 总处理时长: 44865ms
+16:32:51.639 [http-nio-8081-exec-2] INFO  c.c.a.controller.StreamController - === 流式聊天请求结束 ===
+16:32:51.639 [pool-2-thread-2] ERROR c.c.a.service.PostProcessor - ❌ 后处理失败 - 会话: debug-thinking-1758702726766, 错误: ResponseBodyEmitter has already completed, 耗时: 0ms
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 后处理完成 - 耗时: 0ms
+16:32:51.639 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🎉 智能体执行完成 - 会话: debug-thinking-1758702726766, 总耗时: 44864ms
+16:33:32.458 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - === 流式聊天请求开始 ===
+16:33:32.458 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - 会话ID: test-123
+16:33:32.458 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - 用户消息: 你好
+16:33:32.458 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - 深度思考: false
+16:33:32.458 [http-nio-8081-exec-4] INFO  c.c.a.controller.StreamController - 超时配置: 300000ms
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🤖 智能体执行开始
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 📋 执行预处理阶段
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.RequestPreprocessor - 🔄 开始预处理请求
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: test-123, 路由: 简单对话, 耗时: 0ms
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 预处理完成 - 路由: 简单对话, 耗时: 0ms
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: test-123
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 🧠 加载上下文 - 会话: test-123
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - ✅ 上下文加载完成 - 会话: test-123, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 0ms
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: test-123
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 📝 响应生成开始 - 会话: test-123, 路由: 简单对话
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 🎯 生成策略: 简单生成 - 会话: test-123
+16:33:32.458 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - 💬 执行简单生成
+16:33:32.458 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🔍 开始验证流式调用参数 - 会话: unknown
+16:33:32.458 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 📡 开始流式AI模型调用 - 会话: unknown, 模型: qwen-turbo, 消息数: 2
+16:33:32.650 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🌐 HTTP响应已接收 - 会话: unknown, 响应时间: 192ms, 状态码: 200
+16:33:32.651 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ⚡ 首个数据块已接收 - 会话: unknown, 首块延迟: 193ms
+16:33:33.626 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - 🏁 流式响应结束标记 - 会话: unknown, 总块数: 10
+16:33:33.626 [pool-2-thread-2] INFO  c.can.aiassistant.service.AiService - ✅ 流式响应处理完成 - 会话: unknown, 总耗时: 1168ms, 总块数: 10, 首块延迟: 193ms, 消息长度: 23字符
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 23, 内容: 你好！很高兴见到你，有什么我可以帮你的吗？😊...
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.ResponseGenerator - ✅ 响应生成完成 - 会话: test-123, 策略: 简单生成, 耗时: 1168ms
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 1168ms
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: test-123
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 💾 保存上下文 - 会话: test-123
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - 💾 保存AI响应 - 会话: test-123, 响应长度: 23, 内容: 你好！很高兴见到你，有什么我可以帮你的吗？😊...
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.MemoryManager - ✅ 上下文保存完成 - 会话: test-123, 耗时: 0ms
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: test-123
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.PostProcessor - 🔄 后处理开始 - 会话: test-123
+16:33:33.626 [pool-2-thread-2] ERROR c.c.a.service.PostProcessor - ❌ 后处理失败 - 会话: test-123, 错误: ResponseBodyEmitter has already completed, 耗时: 0ms
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - ✅ 后处理完成 - 耗时: 0ms
+16:33:33.626 [pool-2-thread-2] INFO  c.c.a.service.AgentExecutor - 🎉 智能体执行完成 - 会话: test-123, 总耗时: 1168ms
+16:33:33.627 [http-nio-8081-exec-5] INFO  c.c.a.controller.StreamController - ✅ 流式聊天完成 - 会话: test-123, 总处理时长: 1170ms
+16:33:33.627 [http-nio-8081-exec-5] INFO  c.c.a.controller.StreamController - === 流式聊天请求结束 ===

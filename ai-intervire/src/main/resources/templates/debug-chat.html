@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试聊天页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; display: flex; gap: 20px; }
+        .chat-section { flex: 1; background: white; padding: 20px; border-radius: 8px; }
+        .debug-section { flex: 1; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+        .message { margin: 10px 0; padding: 10px; border-radius: 8px; }
+        .user { background: #007bff; color: white; text-align: right; }
+        .assistant { background: #e9ecef; color: #333; }
+        .input-group { display: flex; gap: 10px; margin-top: 20px; }
+        .input-group input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .debug-log { height: 400px; overflow-y: auto; background: white; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 12px; }
+        .stream-content { display: inline; }
+        .stream-cursor { display: inline; animation: blink 1s infinite; color: #007bff; font-weight: bold; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        .streaming-complete .stream-cursor { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-section">
+            <h2>聊天区域</h2>
+            <div id="chatMessages">
+                <div class="message assistant">
+                    你好！我是AI智能助手调试版本。请输入消息测试流式输出。
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="messageInput" placeholder="输入消息..." value="你好，请简单介绍一下自己">
+                <button id="sendBtn" class="btn" onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <h2>调试信息</h2>
+            <div id="debugLog" class="debug-log">调试日志将在这里显示...\n</div>
+            <button class="btn" onclick="clearDebug()" style="margin-top: 10px;">清除日志</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const sessionId = /*[[${sessionId}]]*/ 'debug-session';
+        let isProcessing = false;
+        let debugLog = document.getElementById('debugLog');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.textContent += `[${timestamp}] ${message}\n`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+        
+        function clearDebug() {
+            debugLog.textContent = '';
+            log('调试日志已清除');
+        }
+        
+        function addMessage(type, content) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = content;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function sendMessage() {
+            if (isProcessing) {
+                log('❌ 正在处理中，请等待...');
+                return;
+            }
+            
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                log('❌ 消息不能为空');
+                return;
+            }
+            
+            log(`🚀 开始发送消息: "${message}"`);
+            
+            // 显示用户消息
+            addMessage('user', message);
+            
+            // 设置处理状态
+            isProcessing = true;
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = '处理中...';
+            
+            // 创建流式响应容器
+            const chatMessages = document.getElementById('chatMessages');
+            const streamingDiv = document.createElement('div');
+            streamingDiv.className = 'message assistant';
+            streamingDiv.innerHTML = '<span class="stream-content"></span><span class="stream-cursor">|</span>';
+            chatMessages.appendChild(streamingDiv);
+            
+            let accumulatedText = '';
+            
+            log('📡 准备发送HTTP请求...');
+            
+            fetch('/api/stream/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({
+                    message: message,
+                    sessionId: sessionId,
+                    saveHistory: false,
+                    enableDeepThinking: false
+                })
+            })
+            .then(response => {
+                log(`📥 HTTP响应状态: ${response.status} ${response.statusText}`);
+                log(`📥 Content-Type: ${response.headers.get('content-type')}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP错误: ${response.status}`);
+                }
+                
+                const reader = response.body.getReader();
+                let buffer = '';
+                let chunkCount = 0;
+                
+                function processStream() {
+                    return reader.read().then(({done, value}) => {
+                        if (done) {
+                            log('✅ 流式传输完成');
+                            finishStreaming();
+                            resetSendButton();
+                            return;
+                        }
+                        
+                        chunkCount++;
+                        const chunk = new TextDecoder().decode(value);
+                        buffer += chunk;
+                        
+                        log(`📦 接收数据块 #${chunkCount}: ${chunk.length} 字节`);
+                        log(`📦 原始数据: ${JSON.stringify(chunk.substring(0, 100))}${chunk.length > 100 ? '...' : ''}`);
+                        
+                        // 处理完整的SSE消息
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop() || '';
+                        
+                        log(`🔍 处理 ${lines.length} 行数据`);
+                        
+                        for (let i = 0; i < lines.length; i++) {
+                            const line = lines[i];
+                            log(`🔍 第${i+1}行: "${line}"`);
+                            
+                            if (line.startsWith('data:')) {
+                                try {
+                                    const jsonData = line.substring(5).trim();
+                                    if (jsonData === '') {
+                                        log('⚠️ 空数据行，跳过');
+                                        continue;
+                                    }
+                                    
+                                    log(`🔍 JSON数据: ${jsonData}`);
+                                    const data = JSON.parse(jsonData);
+                                    log(`✅ 解析成功: ${JSON.stringify(data)}`);
+                                    
+                                    // 详细检查数据结构
+                                    log(`🔍 数据检查:`);
+                                    log(`   - error: ${data.error} (${typeof data.error})`);
+                                    log(`   - done: ${data.done} (${typeof data.done})`);
+                                    log(`   - content: ${JSON.stringify(data.content)} (${typeof data.content})`);
+                                    log(`   - hasOwnProperty('content'): ${data.hasOwnProperty('content')}`);
+                                    
+                                    if (data.error) {
+                                        log(`❌ 接收到错误: ${data.error}`);
+                                        streamingDiv.innerHTML = `<span style="color: red;">错误: ${data.error}</span>`;
+                                        resetSendButton();
+                                        return;
+                                    }
+                                    
+                                    if (data.hasOwnProperty('content')) {
+                                        log(`📝 处理内容: "${data.content}"`);
+                                        if (data.content !== null) {
+                                            accumulatedText += data.content;
+                                            log(`📝 累积内容: "${accumulatedText}" (长度: ${accumulatedText.length})`);
+                                            
+                                            // 更新显示
+                                            const contentSpan = streamingDiv.querySelector('.stream-content');
+                                            contentSpan.textContent = accumulatedText;
+                                            log(`✅ 更新DOM显示: "${contentSpan.textContent}"`);
+                                        } else {
+                                            log(`📝 content为null，不累积`);
+                                        }
+                                    } else {
+                                        log(`⚠️ 数据对象不包含content属性`);
+                                    }
+                                    
+                                    if (data.done) {
+                                        log('🏁 接收到完成标志');
+                                        finishStreaming();
+                                        resetSendButton();
+                                        return;
+                                    }
+                                    
+                                } catch (e) {
+                                    log(`❌ JSON解析错误: ${e.message}`);
+                                    log(`❌ 原始数据: ${jsonData}`);
+                                }
+                            } else if (line.trim()) {
+                                log(`⚠️ 非data行: "${line}"`);
+                            }
+                        }
+                        
+                        return processStream();
+                    });
+                }
+                
+                log('🔄 开始处理流...');
+                return processStream();
+            })
+            .catch(error => {
+                log(`❌ 请求错误: ${error.message}`);
+                streamingDiv.innerHTML = `<span style="color: red;">网络错误: ${error.message}</span>`;
+                resetSendButton();
+            });
+            
+            messageInput.value = '';
+        }
+        
+        function finishStreaming() {
+            log('🎯 完成流式输出');
+            const streamingDiv = document.querySelector('.message.assistant:last-child');
+            if (streamingDiv) {
+                const cursor = streamingDiv.querySelector('.stream-cursor');
+                if (cursor) {
+                    cursor.remove();
+                    log('🎯 移除光标');
+                }
+                streamingDiv.classList.add('streaming-complete');
+            }
+        }
+        
+        function resetSendButton() {
+            log('🔄 重置发送按钮');
+            isProcessing = false;
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = false;
+            sendBtn.textContent = '发送';
+        }
+        
+        // 回车发送
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        log('🚀 调试聊天页面已加载');
+    </script>
+</body>
+</html>

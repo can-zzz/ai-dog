@@ -41,4 +41,68 @@ public class WebController {
         model.addAttribute("sessionId", sessionId);
         return "chat";
     }
+    
+    /**
+     * 诊断页面
+     */
+    @GetMapping("/diagnostic")
+    public String diagnostic() {
+        return "diagnostic";
+    }
+    
+    /**
+     * 流式调试页面
+     */
+    @GetMapping("/stream-debug")
+    public String streamDebug() {
+        return "stream-debug";
+    }
+    
+    /**
+     * 简单测试页面
+     */
+    @GetMapping("/simple-test")
+    public String simpleTest() {
+        return "simple-test";
+    }
+    
+    /**
+     * StateGraph测试页面
+     */
+    @GetMapping("/graph-test")
+    public String graphTest(Model model) {
+        String sessionId = "graph-test-" + UUID.randomUUID().toString().substring(0, 8);
+        model.addAttribute("sessionId", sessionId);
+        return "graph-test";
+    }
+
+    /**
+     * 简化聊天页面
+     */
+    @GetMapping("/chat-simple")
+    public String chatSimple(Model model) {
+        String sessionId = UUID.randomUUID().toString();
+        model.addAttribute("sessionId", sessionId);
+        return "chat-simple";
+    }
+
+    /**
+     * 标准SSE聊天页面
+     */
+    @GetMapping("/standard-sse-chat")
+    public String standardSseChat(Model model) {
+        String sessionId = UUID.randomUUID().toString();
+        model.addAttribute("sessionId", sessionId);
+        return "standard-sse-chat";
+    }
+
+    /**
+     * 调试聊天页面
+     */
+    @GetMapping("/debug-chat")
+    public String debugChat(Model model) {
+        String sessionId = "debug-" + UUID.randomUUID().toString().substring(0, 8);
+        model.addAttribute("sessionId", sessionId);
+        return "debug-chat";
+    }
 }

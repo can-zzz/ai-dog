@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流式输出测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .response-area {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            min-height: 100px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stream-content {
+            display: inline;
+        }
+        
+        .stream-cursor {
+            display: inline;
+            animation: blink 1s infinite;
+            color: #667eea;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .streaming-complete .stream-cursor {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚀 AI助手流式输出测试</h1>
+        
+        <div>
+            <button class="test-button" onclick="testStream(false)">测试普通对话</button>
+            <button class="test-button" onclick="testStream(true)">测试深度思考</button>
+            <button class="test-button" onclick="clearResponse()">清除结果</button>
+        </div>
+        
+        <div class="response-area" id="responseArea">
+            点击上方按钮开始测试流式输出效果...
+        </div>
+        
+        <div style="margin-top: 20px; color: #666; font-size: 14px;">
+            <h3>测试说明：</h3>
+            <ul>
+                <li>🔵 普通对话：测试基本的流式文字输出效果</li>
+                <li>🧠 深度思考：测试思考步骤 + 流式文字的组合效果</li>
+                <li>⚡ 观察光标闪烁效果和实时文字更新</li>
+                <li>✅ 完成后光标自动消失</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function testStream(enableDeepThinking) {
+            const responseArea = document.getElementById('responseArea');
+            const buttons = document.querySelectorAll('.test-button');
+            
+            // 禁用按钮
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // 清空响应区域
+            responseArea.innerHTML = enableDeepThinking ? 
+                '<div style="color: #667eea;">🧠 启动深度思考模式...</div>' : 
+                '<div style="color: #667eea;">💬 启动普通对话模式...</div>';
+            
+            const testMessage = enableDeepThinking ? 
+                "请解释一下人工智能的发展历程" : 
+                "你好，请简单介绍一下自己";
+            
+            // 发送测试请求
+            fetch('/api/stream/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({
+                    message: testMessage,
+                    sessionId: 'stream-test-' + Date.now(),
+                    saveHistory: false,
+                    enableDeepThinking: enableDeepThinking
+                })
+            })
+            .then(response => {
+                const reader = response.body.getReader();
+                let currentMessage = '';
+                let buffer = '';
+                let hasContent = false;
+                
+                function processStream() {
+                    return reader.read().then(({done, value}) => {
+                        if (done) {
+                            // 完成处理
+                            const streamElement = responseArea.querySelector('#streaming-content');
+                            if (streamElement) {
+                                streamElement.classList.add('streaming-complete');
+                            }
+                            buttons.forEach(btn => btn.disabled = false);
+                            return;
+                        }
+                        
+                        // 解析SSE数据
+                        const chunk = new TextDecoder().decode(value);
+                        buffer += chunk;
+                        
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop();
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const jsonData = line.substring(6).trim();
+                                    if (jsonData === '') continue;
+                                    const data = JSON.parse(jsonData);
+                                    
+                                    if (data.error) {
+                                        responseArea.innerHTML = `<div style="color: red;">❌ 错误: ${data.error}</div>`;
+                                        buttons.forEach(btn => btn.disabled = false);
+                                        return;
+                                    }
+                                    
+                                    if (data.done) {
+                                        const streamElement = responseArea.querySelector('#streaming-content');
+                                        if (streamElement) {
+                                            streamElement.classList.add('streaming-complete');
+                                        }
+                                        buttons.forEach(btn => btn.disabled = false);
+                                        return;
+                                    }
+                                    
+                                    if (data.currentStep) {
+                                        // 显示思考步骤
+                                        const stepDiv = document.createElement('div');
+                                        stepDiv.style.cssText = 'margin: 10px 0; padding: 10px; background: #e3f2fd; border-radius: 5px; border-left: 3px solid #2196f3;';
+                                        stepDiv.innerHTML = `
+                                            <strong>🧠 ${data.currentStep.title}</strong><br>
+                                            <span style="color: #666;">${data.currentStep.content}</span>
+                                        `;
+                                        responseArea.appendChild(stepDiv);
+                                        
+                                    } else if (data.content) {
+                                        // 处理流式内容
+                                        if (!hasContent) {
+                                            hasContent = true;
+                                            const contentDiv = document.createElement('div');
+                                            contentDiv.id = 'streaming-content';
+                                            contentDiv.innerHTML = `
+                                                <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 5px;">
+                                                    <strong>💬 AI回复：</strong><br>
+                                                    <span class="stream-content"></span><span class="stream-cursor">|</span>
+                                                </div>
+                                            `;
+                                            responseArea.appendChild(contentDiv);
+                                        }
+                                        
+                                        currentMessage += data.content;
+                                        const contentElement = responseArea.querySelector('.stream-content');
+                                        if (contentElement) {
+                                            contentElement.textContent = currentMessage;
+                                        }
+                                    }
+                                    
+                                } catch (e) {
+                                    console.error('解析JSON错误:', e);
+                                }
+                            }
+                        }
+                        
+                        return processStream();
+                    });
+                }
+                
+                return processStream();
+            })
+            .catch(error => {
+                responseArea.innerHTML = `<div style="color: red;">❌ 网络错误: ${error.message}</div>`;
+                buttons.forEach(btn => btn.disabled = false);
+            });
+        }
+        
+        function clearResponse() {
+            const responseArea = document.getElementById('responseArea');
+            responseArea.innerHTML = '点击上方按钮开始测试流式输出效果...';
+        }
+    </script>
+</body>
+</html>

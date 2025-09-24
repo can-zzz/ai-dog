@@ -282,6 +282,31 @@ public class ThinkingExecutor {
         public List<ThinkingStep> getSteps() { return steps; }
         public ThinkingStrategy getStrategy() { return strategy; }
         public long getTimestamp() { return timestamp; }
+        
+        /**
+         * 将思考结果转换为可读的文本格式
+         */
+        @Override
+        public String toString() {
+            if (steps == null || steps.isEmpty()) {
+                return "暂无思考步骤";
+            }
+            
+            StringBuilder result = new StringBuilder();
+            result.append("采用").append(strategy.getDescription()).append("策略，共").append(steps.size()).append("个思考步骤：\n");
+            
+            for (int i = 0; i < steps.size(); i++) {
+                ThinkingStep step = steps.get(i);
+                result.append(i + 1).append(". ")
+                      .append(step.getTitle()).append("：")
+                      .append(step.getContent());
+                if (i < steps.size() - 1) {
+                    result.append("\n");
+                }
+            }
+            
+            return result.toString();
+        }
     }
     
     /**
