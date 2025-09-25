@@ -1,0 +1,856 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v3.2.3)[0;39m
+
+23:13:49.942 [main] INFO  c.can.happydog.HappyDogApplication - Starting HappyDogApplication using Java 23.0.2 with PID 22353 (/Users/can/Documents/ai_dog/happy-dog/target/classes started by can in /Users/can/Documents/ai_dog/happy-dog)
+23:13:49.943 [main] INFO  c.can.happydog.HappyDogApplication - No active profile set, falling back to 1 default profile: "default"
+23:13:50.295 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+23:13:50.301 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+23:13:50.301 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+23:13:50.321 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+23:13:50.321 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 359 ms
+23:13:50.444 [main] INFO  c.c.happydog.graph.AgentChatWorkflow - 🔧 初始化Agent Chat StateGraph工作流
+23:13:50.445 [main] INFO  com.can.happydog.graph.StateGraph - 状态图编译完成，包含 9 个节点
+23:13:50.445 [main] INFO  c.c.happydog.graph.AgentChatWorkflow - ✅ Agent Chat StateGraph工作流初始化完成
+23:13:50.462 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+23:13:50.547 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path ''
+23:13:50.551 [main] INFO  c.can.happydog.HappyDogApplication - Started HappyDogApplication in 0.757 seconds (process running for 0.895)
+23:13:50.552 [main] INFO  c.can.happydog.HappyDogApplication - ===========================================
+23:13:50.552 [main] INFO  c.can.happydog.HappyDogApplication - 🐕 快乐小狗 启动成功！
+23:13:50.552 [main] INFO  c.can.happydog.HappyDogApplication - 访问地址: http://localhost:8081
+23:13:50.552 [main] INFO  c.can.happydog.HappyDogApplication - 健康检查: http://localhost:8081/api/ai/health
+23:13:50.552 [main] INFO  c.can.happydog.HappyDogApplication - ===========================================
+23:15:05.493 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+23:15:05.493 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+23:15:05.495 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+23:15:05.569 [http-nio-8081-exec-1] INFO  c.c.h.controller.StreamController - === 流式聊天请求开始 ===
+23:15:05.569 [http-nio-8081-exec-1] INFO  c.c.h.controller.StreamController - 会话ID: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.569 [http-nio-8081-exec-1] INFO  c.c.h.controller.StreamController - 用户消息: 人情味而且
+23:15:05.569 [http-nio-8081-exec-1] INFO  c.c.h.controller.StreamController - 深度思考: false
+23:15:05.569 [http-nio-8081-exec-1] INFO  c.c.h.controller.StreamController - 超时配置: 300000ms
+23:15:05.571 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🤖 智能体执行开始
+23:15:05.571 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 📋 执行预处理阶段
+23:15:05.571 [pool-3-thread-1] INFO  c.c.h.service.RequestPreprocessor - 🔄 开始预处理请求
+23:15:05.571 [pool-3-thread-1] INFO  c.c.h.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话, 耗时: 0ms
+23:15:05.571 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 0ms
+23:15:05.571 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.571 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - 🧠 加载上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.572 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文加载完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 历史记录: 0, 压缩后: 0, 耗时: 1ms
+23:15:05.572 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 1ms
+23:15:05.572 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.572 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 📝 响应生成开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话
+23:15:05.572 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.572 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 🧠 执行上下文感知生成
+23:15:05.572 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - ⚠️ 没有历史上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.573 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 🔍 开始验证流式调用参数 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:05.573 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 📡 开始流式AI模型调用 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 模型: qwen-turbo, 消息数: 2
+23:15:06.052 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 🌐 HTTP响应已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应时间: 467ms, 状态码: 200
+23:15:06.053 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - ⚡ 首个数据块已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 首块延迟: 468ms
+23:15:09.594 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 🏁 流式响应结束标记 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总块数: 33
+23:15:09.594 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - ✅ 流式响应处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 4021ms, 总块数: 33, 首块延迟: 468ms, 消息长度: 172字符
+23:15:09.602 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 172, 内容: 汪汪！你说"人情味"，这让我特别开心呢！我最喜欢和大家交朋友啦，就像我们小狗一样，总是热情地摇尾巴打...
+23:15:09.610 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - ✅ 响应生成完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 策略: 上下文感知生成, 耗时: 4038ms
+23:15:09.610 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 4038ms
+23:15:09.610 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:09.610 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - 💾 保存上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:09.612 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - 💾 保存AI响应 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应长度: 172, 内容: 汪汪！你说"人情味"，这让我特别开心呢！我最喜欢和大家交朋友啦，就像我们小狗一样，总是热情地摇尾巴打...
+23:15:09.612 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文保存完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 耗时: 2ms
+23:15:09.613 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 3ms
+23:15:09.613 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:09.613 [pool-3-thread-1] INFO  c.can.happydog.service.PostProcessor - 🔄 后处理开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:09.615 [pool-3-thread-1] ERROR c.can.happydog.service.PostProcessor - ❌ 后处理失败 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 错误: ResponseBodyEmitter has already completed, 耗时: 2ms
+23:15:09.615 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 后处理完成 - 耗时: 2ms
+23:15:09.615 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🎉 智能体执行完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 4044ms
+23:15:09.616 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - ✅ 流式聊天完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总处理时长: 4047ms
+23:15:09.616 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - === 流式聊天请求结束 ===
+23:15:11.829 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - === 流式聊天请求开始 ===
+23:15:11.829 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 会话ID: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:11.829 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 用户消息: 发
+23:15:11.829 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 深度思考: false
+23:15:11.829 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 超时配置: 300000ms
+23:15:11.831 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🤖 智能体执行开始
+23:15:11.831 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 📋 执行预处理阶段
+23:15:11.831 [pool-3-thread-1] INFO  c.c.h.service.RequestPreprocessor - 🔄 开始预处理请求
+23:15:11.831 [pool-3-thread-1] INFO  c.c.h.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话, 耗时: 0ms
+23:15:11.831 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 0ms
+23:15:11.831 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:11.831 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - 🧠 加载上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:11.836 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文加载完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 历史记录: 2, 压缩后: 2, 耗时: 5ms
+23:15:11.836 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 5ms
+23:15:11.836 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:11.837 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 📝 响应生成开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话
+23:15:11.837 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:11.837 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 🧠 执行上下文感知生成
+23:15:11.837 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 🔍 添加历史上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 压缩后消息数: 2
+23:15:11.837 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: 人情味而且...
+23:15:11.837 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！你说"人情味"，这让我特别开心呢！我最喜欢和大家交朋友啦，就像我们小狗一样，总是热情地摇尾巴打...
+23:15:11.837 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 🔍 开始验证流式调用参数 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:11.838 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 📡 开始流式AI模型调用 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 模型: qwen-turbo, 消息数: 4
+23:15:12.101 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 🌐 HTTP响应已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应时间: 263ms, 状态码: 200
+23:15:12.102 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - ⚡ 首个数据块已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 首块延迟: 264ms
+23:15:14.832 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - 🏁 流式响应结束标记 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总块数: 26
+23:15:14.833 [pool-3-thread-1] INFO  com.can.happydog.service.AiService - ✅ 流式响应处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 2996ms, 总块数: 26, 首块延迟: 264ms, 消息长度: 132字符
+23:15:14.834 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 132, 内容: 汪汪！发什么呀？是想发个消息吗？还是想发个可爱的表情包？我最喜欢和大家一起分享快乐啦！
+
+你知道吗，...
+23:15:14.834 [pool-3-thread-1] INFO  c.c.h.service.ResponseGenerator - ✅ 响应生成完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 策略: 上下文感知生成, 耗时: 2997ms
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 2997ms
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - 💾 保存上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - 💾 保存AI响应 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应长度: 132, 内容: 汪汪！发什么呀？是想发个消息吗？还是想发个可爱的表情包？我最喜欢和大家一起分享快乐啦！
+
+你知道吗，...
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文保存完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 耗时: 0ms
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:14.834 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - ✅ 流式聊天完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总处理时长: 3005ms
+23:15:14.834 [pool-3-thread-1] INFO  c.can.happydog.service.PostProcessor - 🔄 后处理开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:15:14.834 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - === 流式聊天请求结束 ===
+23:15:14.835 [pool-3-thread-1] ERROR c.can.happydog.service.PostProcessor - ❌ 后处理失败 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 错误: ResponseBodyEmitter has already completed, 耗时: 1ms
+23:15:14.835 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - ✅ 后处理完成 - 耗时: 1ms
+23:15:14.835 [pool-3-thread-1] INFO  c.can.happydog.service.AgentExecutor - 🎉 智能体执行完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 3004ms
+23:16:44.282 [http-nio-8081-exec-8] INFO  c.c.happydog.controller.AiController - Received chat request: 你好，这是一条测试消息
+23:16:45.246 [http-nio-8081-exec-8] INFO  com.can.happydog.service.AiService - Chat completed for session: test-session-123, processing time: 962ms
+23:16:59.912 [http-nio-8081-exec-10] INFO  c.c.happydog.controller.AiController - Received chat request: 再发一条消息测试历史记录
+23:17:01.252 [http-nio-8081-exec-10] INFO  com.can.happydog.service.AiService - Chat completed for session: test-session-123, processing time: 1338ms
+23:17:02.254 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - === 流式聊天请求开始 ===
+23:17:02.255 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - 会话ID: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:02.255 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - 用户消息: d's发送
+23:17:02.255 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - 深度思考: false
+23:17:02.255 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - 超时配置: 300000ms
+23:17:02.256 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🤖 智能体执行开始
+23:17:02.256 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📋 执行预处理阶段
+23:17:02.256 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - 🔄 开始预处理请求
+23:17:02.256 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话, 耗时: 0ms
+23:17:02.256 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 0ms
+23:17:02.256 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:02.256 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 🧠 加载上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:02.257 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文加载完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 历史记录: 4, 压缩后: 4, 耗时: 1ms
+23:17:02.257 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 1ms
+23:17:02.257 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:02.257 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 响应生成开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话
+23:17:02.257 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:02.258 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🧠 执行上下文感知生成
+23:17:02.258 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🔍 添加历史上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 压缩后消息数: 4
+23:17:02.258 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: 人情味而且...
+23:17:02.258 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！你说"人情味"，这让我特别开心呢！我最喜欢和大家交朋友啦，就像我们小狗一样，总是热情地摇尾巴打...
+23:17:02.258 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: 发...
+23:17:02.258 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！发什么呀？是想发个消息吗？还是想发个可爱的表情包？我最喜欢和大家一起分享快乐啦！
+
+你知道吗，...
+23:17:02.258 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🔍 开始验证流式调用参数 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:02.258 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 📡 开始流式AI模型调用 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 模型: qwen-turbo, 消息数: 6
+23:17:02.519 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🌐 HTTP响应已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应时间: 261ms, 状态码: 200
+23:17:02.519 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ⚡ 首个数据块已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 首块延迟: 261ms
+23:17:05.448 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🏁 流式响应结束标记 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总块数: 28
+23:17:05.448 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ✅ 流式响应处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 3190ms, 总块数: 28, 首块延迟: 261ms, 消息长度: 138字符
+23:17:05.449 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 138, 内容: 汪汪！你说的"发送"是不是有点小迷糊呀？我最喜欢和你聊天啦，就像小狗追着飞盘一样开心。要不我们换个方...
+23:17:05.450 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ 响应生成完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 策略: 上下文感知生成, 耗时: 3193ms
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 3193ms
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存AI响应 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应长度: 138, 内容: 汪汪！你说的"发送"是不是有点小迷糊呀？我最喜欢和你聊天啦，就像小狗追着飞盘一样开心。要不我们换个方...
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文保存完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 耗时: 0ms
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:05.450 [pool-3-thread-2] INFO  c.can.happydog.service.PostProcessor - 🔄 后处理开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:05.451 [pool-3-thread-2] ERROR c.can.happydog.service.PostProcessor - ❌ 后处理失败 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 错误: ResponseBodyEmitter has already completed, 耗时: 1ms
+23:17:05.451 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 后处理完成 - 耗时: 1ms
+23:17:05.451 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🎉 智能体执行完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 3195ms
+23:17:05.451 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - ✅ 流式聊天完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总处理时长: 3197ms
+23:17:05.451 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - === 流式聊天请求结束 ===
+23:17:06.955 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - === 流式聊天请求开始 ===
+23:17:06.956 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - 会话ID: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:06.956 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - 用户消息: 人情味而且
+23:17:06.956 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - 深度思考: false
+23:17:06.956 [http-nio-8081-exec-4] INFO  c.c.h.controller.StreamController - 超时配置: 300000ms
+23:17:06.956 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🤖 智能体执行开始
+23:17:06.956 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📋 执行预处理阶段
+23:17:06.956 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - 🔄 开始预处理请求
+23:17:06.956 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话, 耗时: 0ms
+23:17:06.956 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 0ms
+23:17:06.956 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:06.956 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 🧠 加载上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:06.957 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文加载完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 历史记录: 6, 压缩后: 6, 耗时: 1ms
+23:17:06.957 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 1ms
+23:17:06.957 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 响应生成开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 路由: 标准对话
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🧠 执行上下文感知生成
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🔍 添加历史上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 压缩后消息数: 6
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: 人情味而且...
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！你说"人情味"，这让我特别开心呢！我最喜欢和大家交朋友啦，就像我们小狗一样，总是热情地摇尾巴打...
+23:17:06.957 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: 发...
+23:17:06.958 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！发什么呀？是想发个消息吗？还是想发个可爱的表情包？我最喜欢和大家一起分享快乐啦！
+
+你知道吗，...
+23:17:06.958 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: d's发送...
+23:17:06.958 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！你说的"发送"是不是有点小迷糊呀？我最喜欢和你聊天啦，就像小狗追着飞盘一样开心。要不我们换个方...
+23:17:06.958 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🔍 开始验证流式调用参数 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:06.958 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 📡 开始流式AI模型调用 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 模型: qwen-turbo, 消息数: 8
+23:17:07.194 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🌐 HTTP响应已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 响应时间: 235ms, 状态码: 200
+23:17:07.195 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ⚡ 首个数据块已接收 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 首块延迟: 236ms
+23:17:09.487 [pool-3-thread-2] ERROR c.c.h.controller.StreamController - Error sending stream response: java.io.IOException: Broken pipe
+23:17:09.488 [http-nio-8081-exec-7] ERROR c.c.h.controller.StreamController - ❌ 流式聊天发生错误 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 错误: Broken pipe, 处理时长: 2533ms
+23:17:09.495 [http-nio-8081-exec-6] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource .well-known/appspecific/com.chrome.devtools.json.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:09.495 [http-nio-8081-exec-7] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: Broken pipe
+java.io.IOException: Broken pipe
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:137)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:102)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:58)
+	at java.base/sun.nio.ch.SocketChannelImpl.implWrite(SocketChannelImpl.java:566)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:618)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:118)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1381)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:764)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:728)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:712)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1245)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:400)
+	at org.apache.coyote.Response.action(Response.java:208)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:301)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:267)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at java.base/java.io.FilterOutputStream.flush(FilterOutputStream.java:155)
+	at com.fasterxml.jackson.core.json.UTF8JsonGenerator.flush(UTF8JsonGenerator.java:1200)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1063)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.writeInternal(AbstractGenericHttpMessageConverter.java:123)
+	at org.springframework.http.converter.AbstractHttpMessageConverter.write(AbstractHttpMessageConverter.java:236)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.sendInternal(ResponseBodyEmitterReturnValueHandler.java:221)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.send(ResponseBodyEmitterReturnValueHandler.java:212)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.sendInternal(ResponseBodyEmitter.java:234)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.send(ResponseBodyEmitter.java:225)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:135)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:99)
+	at com.can.happydog.controller.StreamController.lambda$streamChat$3(StreamController.java:89)
+	at com.can.happydog.service.ResponseGenerator$ResponseCollector.onResponse(ResponseGenerator.java:531)
+	at com.can.happydog.service.ResponseGenerator$3.onResponse(ResponseGenerator.java:207)
+	at com.can.happydog.service.AiService.lambda$streamCallAiModel$1(AiService.java:579)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:247)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:188)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:162)
+	at com.can.happydog.service.AiService.streamCallAiModel(AiService.java:524)
+	at com.can.happydog.service.ResponseGenerator.executeContextAwareGeneration(ResponseGenerator.java:201)
+	at com.can.happydog.service.ResponseGenerator.executeGenerationStrategy(ResponseGenerator.java:122)
+	at com.can.happydog.service.ResponseGenerator.generateResponse(ResponseGenerator.java:63)
+	at com.can.happydog.service.AgentExecutor.executeResponseGeneration(AgentExecutor.java:173)
+	at com.can.happydog.service.AgentExecutor.execute(AgentExecutor.java:72)
+	at com.can.happydog.controller.StreamController.lambda$streamChat$4(StreamController.java:87)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:09.498 [http-nio-8081-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Failure in @ExceptionHandler com.can.happydog.exception.GlobalExceptionHandler#handleGenericException(Exception)
+org.springframework.http.converter.HttpMessageNotWritableException: No converter for [class java.util.HashMap] with preset Content-Type 'text/event-stream'
+	at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:319)
+	at org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor.handleReturnValue(HttpEntityMethodProcessor.java:245)
+	at org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite.handleReturnValue(HandlerMethodReturnValueHandlerComposite.java:78)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver.doResolveHandlerMethodException(ExceptionHandlerExceptionResolver.java:432)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodExceptionResolver.doResolveException(AbstractHandlerMethodExceptionResolver.java:74)
+	at org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver.resolveException(AbstractHandlerExceptionResolver.java:175)
+	at org.springframework.web.servlet.handler.HandlerExceptionResolverComposite.resolveException(HandlerExceptionResolverComposite.java:80)
+	at org.springframework.web.servlet.DispatcherServlet.processHandlerException(DispatcherServlet.java:1357)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1160)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:642)
+	at org.apache.catalina.core.ApplicationDispatcher.doInclude(ApplicationDispatcher.java:520)
+	at org.apache.catalina.core.ApplicationDispatcher.include(ApplicationDispatcher.java:463)
+	at org.apache.catalina.core.StandardHostValve.custom(StandardHostValve.java:343)
+	at org.apache.catalina.core.StandardHostValve.status(StandardHostValve.java:222)
+	at org.apache.catalina.core.StandardHostValve.throwable(StandardHostValve.java:308)
+	at org.apache.catalina.core.AsyncContextImpl.setErrorState(AsyncContextImpl.java:430)
+	at org.apache.catalina.connector.CoyoteAdapter.asyncDispatch(CoyoteAdapter.java:155)
+	at org.apache.coyote.AbstractProcessor.dispatch(AbstractProcessor.java:243)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:57)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:09.500 [http-nio-8081-exec-7] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] threw exception
+java.io.IOException: Broken pipe
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:137)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:102)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:58)
+	at java.base/sun.nio.ch.SocketChannelImpl.implWrite(SocketChannelImpl.java:566)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:618)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:118)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1381)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:764)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:728)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:712)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1245)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:400)
+	at org.apache.coyote.Response.action(Response.java:208)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:301)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:267)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at java.base/java.io.FilterOutputStream.flush(FilterOutputStream.java:155)
+	at com.fasterxml.jackson.core.json.UTF8JsonGenerator.flush(UTF8JsonGenerator.java:1200)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1063)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.writeInternal(AbstractGenericHttpMessageConverter.java:123)
+	at org.springframework.http.converter.AbstractHttpMessageConverter.write(AbstractHttpMessageConverter.java:236)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.sendInternal(ResponseBodyEmitterReturnValueHandler.java:221)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.send(ResponseBodyEmitterReturnValueHandler.java:212)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.sendInternal(ResponseBodyEmitter.java:234)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.send(ResponseBodyEmitter.java:225)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:135)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:99)
+	at com.can.happydog.controller.StreamController.lambda$streamChat$3(StreamController.java:89)
+	at com.can.happydog.service.ResponseGenerator$ResponseCollector.onResponse(ResponseGenerator.java:531)
+	at com.can.happydog.service.ResponseGenerator$3.onResponse(ResponseGenerator.java:207)
+	at com.can.happydog.service.AiService.lambda$streamCallAiModel$1(AiService.java:579)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:247)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:188)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:162)
+	at com.can.happydog.service.AiService.streamCallAiModel(AiService.java:524)
+	at com.can.happydog.service.ResponseGenerator.executeContextAwareGeneration(ResponseGenerator.java:201)
+	at com.can.happydog.service.ResponseGenerator.executeGenerationStrategy(ResponseGenerator.java:122)
+	at com.can.happydog.service.ResponseGenerator.generateResponse(ResponseGenerator.java:63)
+	at com.can.happydog.service.AgentExecutor.executeResponseGeneration(AgentExecutor.java:173)
+	at com.can.happydog.service.AgentExecutor.execute(AgentExecutor.java:72)
+	at com.can.happydog.controller.StreamController.lambda$streamChat$4(StreamController.java:87)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:09.502 [http-nio-8081-exec-7] ERROR o.a.c.c.C.[Tomcat].[localhost] - Exception Processing [ErrorPage[errorCode=0, location=/error]]
+java.io.IOException: Broken pipe
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:137)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:102)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:58)
+	at java.base/sun.nio.ch.SocketChannelImpl.implWrite(SocketChannelImpl.java:566)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:618)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:118)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1381)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:764)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:728)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:712)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1245)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:400)
+	at org.apache.coyote.Response.action(Response.java:208)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:301)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:267)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at java.base/java.io.FilterOutputStream.flush(FilterOutputStream.java:155)
+	at com.fasterxml.jackson.core.json.UTF8JsonGenerator.flush(UTF8JsonGenerator.java:1200)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1063)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.writeInternal(AbstractGenericHttpMessageConverter.java:123)
+	at org.springframework.http.converter.AbstractHttpMessageConverter.write(AbstractHttpMessageConverter.java:236)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.sendInternal(ResponseBodyEmitterReturnValueHandler.java:221)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.send(ResponseBodyEmitterReturnValueHandler.java:212)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.sendInternal(ResponseBodyEmitter.java:234)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.send(ResponseBodyEmitter.java:225)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:135)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:99)
+	at com.can.happydog.controller.StreamController.lambda$streamChat$3(StreamController.java:89)
+	at com.can.happydog.service.ResponseGenerator$ResponseCollector.onResponse(ResponseGenerator.java:531)
+	at com.can.happydog.service.ResponseGenerator$3.onResponse(ResponseGenerator.java:207)
+	at com.can.happydog.service.AiService.lambda$streamCallAiModel$1(AiService.java:579)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:247)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:188)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:162)
+	at com.can.happydog.service.AiService.streamCallAiModel(AiService.java:524)
+	at com.can.happydog.service.ResponseGenerator.executeContextAwareGeneration(ResponseGenerator.java:201)
+	at com.can.happydog.service.ResponseGenerator.executeGenerationStrategy(ResponseGenerator.java:122)
+	at com.can.happydog.service.ResponseGenerator.generateResponse(ResponseGenerator.java:63)
+	at com.can.happydog.service.AgentExecutor.executeResponseGeneration(AgentExecutor.java:173)
+	at com.can.happydog.service.AgentExecutor.execute(AgentExecutor.java:72)
+	at com.can.happydog.controller.StreamController.lambda$streamChat$4(StreamController.java:87)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:09.503 [http-nio-8081-exec-7] INFO  c.c.h.controller.StreamController - ✅ 流式聊天完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总处理时长: 2548ms
+23:17:09.503 [http-nio-8081-exec-7] INFO  c.c.h.controller.StreamController - === 流式聊天请求结束 ===
+23:17:09.598 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ 响应生成完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 策略: 上下文感知生成, 耗时: 2640ms
+23:17:09.596 [http-nio-8081-exec-9] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 2641ms
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存上下文 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:09.598 [pool-3-thread-2] WARN  c.can.happydog.service.MemoryManager - ⚠️ AI响应为空，未保存 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文保存完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 耗时: 0ms
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:09.598 [pool-3-thread-2] INFO  c.can.happydog.service.PostProcessor - 🔄 后处理开始 - 会话: a7560a38-3227-4db6-b28b-dd8035483762
+23:17:09.599 [pool-3-thread-2] ERROR c.can.happydog.service.PostProcessor - ❌ 后处理失败 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 错误: ResponseBodyEmitter has already completed, 耗时: 1ms
+23:17:09.599 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 后处理完成 - 耗时: 1ms
+23:17:09.599 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🎉 智能体执行完成 - 会话: a7560a38-3227-4db6-b28b-dd8035483762, 总耗时: 2643ms
+23:17:10.904 [http-nio-8081-exec-10] INFO  c.c.happydog.controller.AiController - Getting history for session: test-session-123
+23:17:11.042 [http-nio-8081-exec-3] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource .well-known/appspecific/com.chrome.devtools.json.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:11.089 [http-nio-8081-exec-4] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:17:12.931 [http-nio-8081-exec-6] INFO  c.c.h.controller.StreamController - === 流式聊天请求开始 ===
+23:17:12.931 [http-nio-8081-exec-6] INFO  c.c.h.controller.StreamController - 会话ID: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.931 [http-nio-8081-exec-6] INFO  c.c.h.controller.StreamController - 用户消息: 份额请问
+23:17:12.931 [http-nio-8081-exec-6] INFO  c.c.h.controller.StreamController - 深度思考: false
+23:17:12.931 [http-nio-8081-exec-6] INFO  c.c.h.controller.StreamController - 超时配置: 300000ms
+23:17:12.931 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🤖 智能体执行开始
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📋 执行预处理阶段
+23:17:12.932 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - 🔄 开始预处理请求
+23:17:12.932 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 路由: 标准对话, 耗时: 0ms
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 0ms
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 🧠 加载上下文 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文加载完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 历史记录: 0, 压缩后: 0, 耗时: 0ms
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 0ms
+23:17:12.932 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.932 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 响应生成开始 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 路由: 标准对话
+23:17:12.932 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.932 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🧠 执行上下文感知生成
+23:17:12.932 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ⚠️ 没有历史上下文 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.932 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🔍 开始验证流式调用参数 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:12.932 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 📡 开始流式AI模型调用 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 模型: qwen-turbo, 消息数: 2
+23:17:13.125 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🌐 HTTP响应已接收 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 响应时间: 193ms, 状态码: 200
+23:17:13.125 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ⚡ 首个数据块已接收 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 首块延迟: 193ms
+23:17:15.418 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🏁 流式响应结束标记 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总块数: 22
+23:17:15.418 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ✅ 流式响应处理完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总耗时: 2486ms, 总块数: 22, 首块延迟: 193ms, 消息长度: 91字符
+23:17:15.419 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 91, 内容: 汪汪！你好呀~我是快乐小狗，今天过得怎么样呀？我最喜欢和新朋友聊天啦！你刚刚说"份额"，是不是有什么...
+23:17:15.420 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ 响应生成完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 策略: 上下文感知生成, 耗时: 2488ms
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 2489ms
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存上下文 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:15.421 [http-nio-8081-exec-8] INFO  c.c.h.controller.StreamController - ✅ 流式聊天完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总处理时长: 2490ms
+23:17:15.421 [http-nio-8081-exec-8] INFO  c.c.h.controller.StreamController - === 流式聊天请求结束 ===
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存AI响应 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 响应长度: 91, 内容: 汪汪！你好呀~我是快乐小狗，今天过得怎么样呀？我最喜欢和新朋友聊天啦！你刚刚说"份额"，是不是有什么...
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文保存完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 耗时: 0ms
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.PostProcessor - 🔄 后处理开始 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:15.421 [pool-3-thread-2] ERROR c.can.happydog.service.PostProcessor - ❌ 后处理失败 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 错误: ResponseBodyEmitter has already completed, 耗时: 0ms
+23:17:15.421 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 后处理完成 - 耗时: 0ms
+23:17:15.422 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🎉 智能体执行完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总耗时: 2491ms
+23:17:15.594 [http-nio-8081-exec-9] INFO  c.c.happydog.controller.AiController - Getting history for session: test-session-123
+23:17:38.324 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - === 流式聊天请求开始 ===
+23:17:38.330 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 会话ID: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:38.331 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 用户消息: 服务器额
+23:17:38.331 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 深度思考: false
+23:17:38.331 [http-nio-8081-exec-3] INFO  c.c.h.controller.StreamController - 超时配置: 300000ms
+23:17:38.350 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🤖 智能体执行开始
+23:17:38.351 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📋 执行预处理阶段
+23:17:38.357 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - 🔄 开始预处理请求
+23:17:38.359 [pool-3-thread-2] INFO  c.c.h.service.RequestPreprocessor - ✅ 请求预处理完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 路由: 标准对话, 耗时: 2ms
+23:17:38.359 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 预处理完成 - 路由: 标准对话, 耗时: 2ms
+23:17:38.359 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🧠 执行内存加载阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:38.359 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 🧠 加载上下文 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:38.364 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文加载完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 历史记录: 2, 压缩后: 2, 耗时: 5ms
+23:17:38.364 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存加载完成 - 耗时: 5ms
+23:17:38.364 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 📝 执行响应生成阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:38.364 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 响应生成开始 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 路由: 标准对话
+23:17:38.364 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🎯 生成策略: 上下文感知生成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:38.365 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🧠 执行上下文感知生成
+23:17:38.365 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 🔍 添加历史上下文 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 压缩后消息数: 2
+23:17:38.365 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: user, 内容: 份额请问...
+23:17:38.366 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - 📝 历史消息 - 角色: assistant, 内容: 汪汪！你好呀~我是快乐小狗，今天过得怎么样呀？我最喜欢和新朋友聊天啦！你刚刚说"份额"，是不是有什么...
+23:17:38.367 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🔍 开始验证流式调用参数 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:38.367 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 📡 开始流式AI模型调用 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 模型: qwen-turbo, 消息数: 4
+23:17:38.679 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🌐 HTTP响应已接收 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 响应时间: 310ms, 状态码: 200
+23:17:38.680 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ⚡ 首个数据块已接收 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 首块延迟: 311ms
+23:17:42.458 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - 🏁 流式响应结束标记 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总块数: 36
+23:17:42.458 [pool-3-thread-2] INFO  com.can.happydog.service.AiService - ✅ 流式响应处理完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总耗时: 4092ms, 总块数: 36, 首块延迟: 311ms, 消息长度: 179字符
+23:17:42.458 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ ResponseCollector保存最终响应 - 长度: 179, 内容: 汪汪！我明白啦，是关于服务器的事情对不对？虽然我不太懂技术术语，但我超喜欢听你讲这些有趣的故事！你知...
+23:17:42.459 [pool-3-thread-2] INFO  c.c.h.service.ResponseGenerator - ✅ 响应生成完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 策略: 上下文感知生成, 耗时: 4095ms
+23:17:42.459 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 响应生成完成 - 耗时: 4095ms
+23:17:42.459 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 💾 执行内存保存阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:42.459 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存上下文 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:42.459 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - 💾 保存AI响应 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 响应长度: 179, 内容: 汪汪！我明白啦，是关于服务器的事情对不对？虽然我不太懂技术术语，但我超喜欢听你讲这些有趣的故事！你知...
+23:17:42.459 [pool-3-thread-2] INFO  c.can.happydog.service.MemoryManager - ✅ 上下文保存完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 耗时: 0ms
+23:17:42.459 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 内存保存完成 - 耗时: 0ms
+23:17:42.460 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🔄 执行后处理阶段 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:42.460 [pool-3-thread-2] INFO  c.can.happydog.service.PostProcessor - 🔄 后处理开始 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2
+23:17:42.460 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - ✅ 流式聊天完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总处理时长: 4136ms
+23:17:42.460 [http-nio-8081-exec-2] INFO  c.c.h.controller.StreamController - === 流式聊天请求结束 ===
+23:17:42.460 [pool-3-thread-2] ERROR c.can.happydog.service.PostProcessor - ❌ 后处理失败 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 错误: ResponseBodyEmitter has already completed, 耗时: 0ms
+23:17:42.460 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - ✅ 后处理完成 - 耗时: 0ms
+23:17:42.460 [pool-3-thread-2] INFO  c.can.happydog.service.AgentExecutor - 🎉 智能体执行完成 - 会话: 3f9e3a37-9ad2-4845-bb95-c1a214fcfac2, 总耗时: 4110ms
+23:18:20.678 [http-nio-8081-exec-7] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource .well-known/appspecific/com.chrome.devtools.json.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:18:20.723 [http-nio-8081-exec-8] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:18:22.529 [http-nio-8081-exec-3] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource .well-known/appspecific/com.chrome.devtools.json.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+23:18:22.581 [http-nio-8081-exec-2] ERROR c.c.h.e.GlobalExceptionHandler - Unexpected exception occurred: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)

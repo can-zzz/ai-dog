@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快乐小狗</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: 
+                radial-gradient(1200px 600px at -10% 0%, rgba(255, 250, 220, 0.45) 0%, rgba(255, 250, 220, 0) 60%),
+                radial-gradient(900px 500px at 110% 10%, rgba(255, 204, 153, 0.35) 0%, rgba(255, 204, 153, 0) 60%),
+                radial-gradient(900px 600px at 20% 100%, rgba(255, 160, 160, 0.30) 0%, rgba(255, 160, 160, 0) 60%),
+                linear-gradient(135deg, #ffd4a3 0%, #ff9a76 35%, #ff6b6b 65%, #f7c59f 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+        
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem 1.5rem;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 2rem;
+            gap: 1.25rem;
+        }
+        
+        .profile-info {
+            text-align: center;
+        }
+        
+        .action-section {
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .main-container {
+                padding: 20px;
+            }
+            
+            .welcome-card {
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                padding: 3rem;
+            }
+        }
+        
+        .logo {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            font-size: 3rem;
+            line-height: 1;
+        }
+        
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.75rem;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+        
+        @media (min-width: 768px) {
+            .logo {
+                width: 160px;
+                height: 160px;
+                margin: 0 auto 2rem;
+                font-size: 4.5rem;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+            }
+        }
+        
+        .btn-start {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+            color: white;
+        }
+        
+        @media (min-width: 768px) {
+            .btn-start {
+                padding: 15px 40px;
+                font-size: 1.2rem;
+                border-radius: 50px;
+            }
+            
+            .btn-start:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="welcome-card">
+            <div class="profile-section">
+                <div class="logo">
+                    <img src="/images/avatar.jpg" alt="快乐小狗头像" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                </div>
+                <div class="profile-info">
+                    <h1 class="title">快乐小狗</h1>
+                    <p class="subtitle">
+                        🐾嗨！我是快乐小狗，尾巴摇成小太阳！<br>
+                        专业治愈各种不开心～肉干交朋友，汪！
+                    </p>
+                </div>
+            </div>
+            
+            <div class="action-section">
+                <a href="/chat" class="btn-start">
+                    🐾 开始聊天
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
