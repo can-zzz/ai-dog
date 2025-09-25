@@ -1,0 +1,45 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m              [2m (v3.2.3)[0;39m
+
+23:04:15.547 [main] INFO  c.can.happydog.HappyDogApplication - Starting HappyDogApplication using Java 23.0.2 with PID 21630 (/Users/can/Documents/ai_dog/happy-dog/target/classes started by can in /Users/can/Documents/ai_dog/happy-dog)
+23:04:15.548 [main] INFO  c.can.happydog.HappyDogApplication - No active profile set, falling back to 1 default profile: "default"
+23:04:15.882 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+23:04:15.887 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+23:04:15.887 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+23:04:15.908 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+23:04:15.908 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 341 ms
+23:04:16.027 [main] INFO  c.c.happydog.graph.AgentChatWorkflow - 🔧 初始化Agent Chat StateGraph工作流
+23:04:16.028 [main] INFO  com.can.happydog.graph.StateGraph - 状态图编译完成，包含 9 个节点
+23:04:16.028 [main] INFO  c.c.happydog.graph.AgentChatWorkflow - ✅ Agent Chat StateGraph工作流初始化完成
+23:04:16.045 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+23:04:16.124 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+23:04:16.130 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+23:04:16.135 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.2.3:run (default-cli) on project ai-assistant: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
