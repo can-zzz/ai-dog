@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户行为统计 - Happy Dog</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .actions-table {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+        
+        .actions-table h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .action-type {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .action-type.page-view {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .action-type.chat-message {
+            background-color: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .action-type.other {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐕 用户行为统计</h1>
+            <p>实时追踪用户访问和交互数据</p>
+        </div>
+        
+        <button class="refresh-btn" onclick="loadStats()">🔄 刷新数据</button>
+        
+        <div class="loading" id="loading" style="display: none;">
+            正在加载统计数据...
+        </div>
+        
+        <div class="error" id="error" style="display: none;">
+            加载数据时出现错误，请稍后重试。
+        </div>
+        
+        <div class="stats-grid" id="stats-grid">
+            <!-- 统计卡片将在此处动态生成 -->
+        </div>
+        
+        <div class="actions-table">
+            <h3>📊 最近用户行为</h3>
+            <table id="actions-table">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>类型</th>
+                        <th>描述</th>
+                        <th>会话ID</th>
+                        <th>IP地址</th>
+                        <th>浏览器</th>
+                        <th>设备</th>
+                    </tr>
+                </thead>
+                <tbody id="actions-tbody">
+                    <!-- 行为记录将在此处动态生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let currentSessionId = 'demo-session-' + Date.now();
+        
+        // 页面加载时获取统计数据
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            
+            // 每30秒自动刷新数据
+            setInterval(loadStats, 30000);
+        });
+        
+        // 加载统计数据
+        async function loadStats() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const statsGrid = document.getElementById('stats-grid');
+            
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            
+            try {
+                // 获取统计摘要
+                const response = await fetch('/api/user-actions/stats/summary');
+                if (!response.ok) throw new Error('获取统计数据失败');
+                
+                const data = await response.json();
+                renderStats(data);
+                
+                // 获取当前会话的行为记录
+                const actionsResponse = await fetch(`/api/user-actions/session/${currentSessionId}`);
+                if (actionsResponse.ok) {
+                    const actions = await actionsResponse.json();
+                    renderActions(actions);
+                }
+                
+            } catch (err) {
+                console.error('加载统计数据失败:', err);
+                error.style.display = 'block';
+                error.textContent = '加载数据时出现错误: ' + err.message;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        // 渲染统计数据
+        function renderStats(data) {
+            const statsGrid = document.getElementById('stats-grid');
+            const today = data.today || {};
+            
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <h3>📅 今日总访问</h3>
+                    <div class="stat-number">${today.totalActions || 0}</div>
+                    <div class="stat-label">总行为数</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🏠 主页访问</h3>
+                    <div class="stat-number">${today.homePageViews || 0}</div>
+                    <div class="stat-label">今日主页访问次数</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>💬 聊天页面</h3>
+                    <div class="stat-number">${today.chatPageViews || 0}</div>
+                    <div class="stat-label">今日聊天页面访问次数</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🗨️ 聊天消息</h3>
+                    <div class="stat-number">${today.chatMessages || 0}</div>
+                    <div class="stat-label">今日聊天消息数</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>👤 用户消息</h3>
+                    <div class="stat-number">${today.userMessages || 0}</div>
+                    <div class="stat-label">用户发送的消息</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🤖 AI回复</h3>
+                    <div class="stat-number">${today.aiMessages || 0}</div>
+                    <div class="stat-label">AI回复的消息</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🔗 活跃会话</h3>
+                    <div class="stat-number">${data.activeSessions || 0}</div>
+                    <div class="stat-label">当前活跃会话数</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>🌍 独立访客</h3>
+                    <div class="stat-number">${today.uniqueIps || 0}</div>
+                    <div class="stat-label">今日独立IP数</div>
+                </div>
+            `;
+        }
+        
+        // 渲染行为记录
+        function renderActions(actions) {
+            const tbody = document.getElementById('actions-tbody');
+            
+            if (!actions || actions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #666;">
+                            暂无行为记录
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = actions.slice(-20).reverse().map(action => {
+                const actionTypeClass = getActionTypeClass(action.actionType);
+                const actionTypeText = getActionTypeText(action.actionType);
+                
+                return `
+                    <tr>
+                        <td>${formatDateTime(action.timestamp)}</td>
+                        <td><span class="action-type ${actionTypeClass}">${actionTypeText}</span></td>
+                        <td>${action.actionDescription || '-'}</td>
+                        <td>${action.sessionId ? action.sessionId.substring(0, 8) + '...' : '-'}</td>
+                        <td>${action.userIp || '-'}</td>
+                        <td>${action.browser || '-'}</td>
+                        <td>${action.deviceType || '-'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // 获取行为类型样式类
+        function getActionTypeClass(actionType) {
+            switch (actionType) {
+                case 'PAGE_VIEW': return 'page-view';
+                case 'CHAT_MESSAGE': return 'chat-message';
+                default: return 'other';
+            }
+        }
+        
+        // 获取行为类型文本
+        function getActionTypeText(actionType) {
+            switch (actionType) {
+                case 'PAGE_VIEW': return '页面访问';
+                case 'CHAT_MESSAGE': return '聊天消息';
+                case 'OTHER': return '其他操作';
+                default: return actionType;
+            }
+        }
+        
+        // 格式化日期时间
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+        
+        // 记录页面访问（演示用）
+        fetch('/api/user-actions/track/other', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Session-Id': currentSessionId
+            },
+            body: JSON.stringify({
+                description: '访问用户行为统计页面'
+            })
+        }).catch(err => console.log('记录页面访问失败:', err));
+    </script>
+</body>
+</html>
